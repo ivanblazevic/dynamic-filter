@@ -1,0 +1,25 @@
+{
+  "name": "dynamic-filter",
+  "version": "1.0.0",
+  "description": "Angular dynamic filter directive",
+  "main": "Gruntfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "angular",
+    "dynamic",
+    "filter"
+  ],
+  "author": "Ivan Blažević",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/angular": "^1.6.32",
+    "grunt": "^1.0.1",
+    "grunt-contrib-clean": "^1.1.0",
+    "grunt-ts": "^6.0.0-beta.16",
+    "grunt-ts-concat": "^0.2.2",
+    "grunt-typescript": "^0.8.0",
+    "typescript": "^2.5.2"
+  }
+}
