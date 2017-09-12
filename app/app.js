@@ -1,26 +1,6 @@
 var app = angular.module("userExplorer", ['ngDynamicFilter', 'ngMaterial']);
 
-app.controller("MainCtrl", function($scope) {
-
-    $scope.filterOptions = [
-        {
-            type: "OPTIONS",
-            label: "City",
-            field: "city",
-            options: ["Berlin", "Budapest", "Vienna", "Copenhagen", "Amsterdam"]
-        },
-        {
-            type: "OPTIONS",
-            label: "Tags",
-            field: "tags",
-            options: ["Concert", "Festival", "Party"]
-        },
-        {
-            type: "TEXT",
-            label: "Nick",
-            field: "nick"
-        }
-    ]
+app.controller("MainCtrl", function($scope, $q, $timeout) {
 
     $scope.onFilter = function(result) {
         $scope.result = result;
@@ -48,5 +28,49 @@ app.controller("MainCtrl", function($scope) {
         {position: 19, name: 'Potassium', weight: 39.0983, symbol: 'K'},
         {position: 20, name: 'Calcium', weight: 40.078, symbol: 'Ca'},
     ];
+
+    // return array of strings
+    $scope.querySearch = function(query) {
+        var results = query ? $scope.dataSource.filter( createFilterFor(query) ) : $scope.dataSource, deferred;
+        deferred = $q.defer();
+        $timeout(function () {
+            deferred.resolve( results.map(function(m) { return m.name }) );
+        }, Math.random() * 1000, false);
+        return deferred.promise;
+    }
+
+    /**
+    * Create filter function for a query string
+    */
+    function createFilterFor(query) {
+        var lowercaseQuery = angular.lowercase(query);
+        return function filterFn(item) {
+            return (item.name.toLowerCase().indexOf(lowercaseQuery) === 0);
+        };
+    }
+
+    $scope.filterOptions = [
+        {
+            type: "OPTIONS",
+            label: "Material",
+            field: "material",
+            options: $scope.dataSource.map(function(m) { return m.name })
+        },
+        {
+            type: "TEXT",
+            label: "Symbol",
+            field: "symbol",
+            options: ["Concert", "Festival", "Party"]
+        },
+        {
+            type: "AUTOCOMPLETE",
+            label: "Material Search",
+            field: "material",
+            params: {
+                querySearch: $scope.querySearch
+            }
+        }
+    ]
+
 
 });
