@@ -1,4 +1,4 @@
-class Filters extends Array {
+class Filters extends XArray {
 
     callback: any;
 
@@ -9,42 +9,54 @@ class Filters extends Array {
 
     public add(): void {
         // Prevent adding filter if no previous selected
-        let lastFilter = this[this.length - 1];
+        let lastFilter = this.last();
         if (lastFilter && !lastFilter.option) return;
         this.push(new Filter(this.callback));
     }
 
+    private getOptionByField(options: Option[], field: string): Option {
+        let result = options.filter(function(o) {
+            return o.field == field;
+        });
+
+        if (result.length == 0) throw("Saved state value not found in options array!");
+
+        return result[0];
+    }
+
     public loadState(options: Option[]): void {
         var state = JSON.parse(localStorage.getItem('dynamicFilter'));
-        var self = this;
-
         if (!state) return;
 
+        var self = this;
+
         state.forEach(function (s) {
-            let searchOption = options.filter(function(o) {
-                return o.field == s.option.field;
-            });
-            if (searchOption.length == 0) throw("Saved state value not found in options array!");
+            if (!s.values) return;
+
             self.add();
-            self[self.length-1].onSelect(searchOption[0]);
+            let lastAddedFilter = self.last();
+            let option = this.getOptionByField(options, s.option.field);
+            lastAddedFilter.onSelect(option);
+
             // add values
-            if (s.values) {
-                s.values.forEach(function(v) {
-                    self[self.length-1].addValue();
-                    self[self.length-1].values[self[self.length-1].values.length-1] = v;
-                });
-            }
+            s.values.forEach(function(v) {
+                lastAddedFilter.addValue();
+                lastAddedFilter.values[lastAddedFilter.values.length-1] = v;
+                var lastAddedFilterValue = lastAddedFilter.values.last();
+                lastAddedFilterValue = v;
+            });
+
         });
     }
 
     public removeLast(): void {
-        this.splice(-1, 1);
+        this.removeLastItem();
         this.callback();
     }
 
     public isFilterSelected(option): boolean {
         return this.some(function(f) {
-            return f.field == option.field;
+            return f.option && f.option.field == option.field;
         });
     }
 
@@ -60,7 +72,7 @@ class Filters extends Array {
         localStorage.setItem('dynamicFilter', JSON.stringify(this));
         return this.map(function(m) {
             var o = {};
-            o[m.option.field] = m.values.map(function(v) { return v });
+            o[m.option.field] = m.values;
             return o;
         });
     }
