@@ -22,11 +22,58 @@
     <script type="text/javascript" src="app/app.js"></script>
     <script type="text/javascript" src="app/directives/dynamicFilter/concat.js"></script>
 
+    <style media="screen">
+
+        .links-section {
+            float: right;
+            line-height: 0px;
+        }
+
+        .links-section a {
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .links-section a:hover {
+            text-decoration: underline;
+        }
+
+    </style>
 
 </head>
 <body ng-controller="MainCtrl">
 
     <md-content class="md-padding">
+
+        <div class="links-section">
+
+            <a ng-click="showConfig =! showConfig">Show Config</a>
+
+            <a ng-click="showConfig =! showConfig">API Docs</a>
+
+        </div>
+
+        <pre style="border: 1px solid #e4e4e4;" class="prettyprint" ng-class="{ show: showConfig, hidden: !showConfig }">$scope.filterOptions = [
+    {
+        type: "OPTIONS",
+        label: "Material",
+        field: "material",
+        options: $scope.dataSource.map(function(m) { return m.name }) // map object array to string
+    },
+    {
+        type: "TEXT",
+        label: "Symbol",
+        field: "symbol"
+    },
+    {
+        type: "AUTOCOMPLETE",
+        label: "Material Search",
+        field: "material",
+        params: {
+            querySearch: $scope.querySearch // if autocomplete, pass function which returns promise
+        }
+    }
+]</pre>
 
         <dynamic-filter
             template-url="app/directives/dynamicFilter/ngDynamicFilterMaterial.html"
