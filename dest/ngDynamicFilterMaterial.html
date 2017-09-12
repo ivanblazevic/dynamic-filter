@@ -3,28 +3,31 @@
     <div ng-repeat="filter in filters" layout="row" class="layout-row">
 
         <md-input-container style="width: 18%;">
-            <md-select ng-model="o" placeholder="Select option" ng-change="filter.onSelect(o)" flex="auto">
-                <md-option ng-hide="filters.isFilterSelected(o)" ng-value="o" ng-repeat="o in options track by $index">{{ o.label }}</md-option>
+            <md-select ng-model="filter.option" placeholder="Select option" ng-change="filter.onSelect(filter.option)" flex="auto">
+                <md-option ng-hide="filters.isFilterSelected(o)" ng-value="o" ng-repeat="o in options">{{ o.label }}</md-option>
             </md-select>
         </md-input-container>
 
         <span ng-repeat="value in filter.values track by $index" style="margin-left: 10px;width:18%">
 
-            <md-input-container style="width: 100%;" ng-if="filter.type != 'AUTOCOMPLETE'">
+            <md-input-container style="width: 100%;" ng-if="!filter.isAutocomplete()">
 
-                <md-select ng-model="o" placeholder="Select value" ng-change="value.onSelect(o)" ng-if="filter.type == 'OPTIONS'">
-                    <md-option ng-hide="filters.isValueSelected(o)" ng-value="o" ng-repeat="o in filter.options">{{ o }}</md-option>
+                <md-select ng-model="filter.values[$index]" ng-change="filter.callback()" placeholder="Select value" ng-if="filter.isOptions()">
+                    <md-option ng-hide="filters.isValueSelected(o)" ng-value="o" ng-repeat="o in filter.option.options">{{ o }}</md-option>
                 </md-select>
 
-                <!-- use always first value in array, this is because we cannot have multiple text input values as we can with dropdowns -->
-                <input type="text" name="" ng-model="filter.values[0].value" ng-if="filter.type == 'TEXT'" ng-model-onblur ng-change="filter.values[0].callback()">
+                <input type="text"
+                    ng-model="filter.values[0].value"
+                    ng-if="filter.isText()"
+                    ng-model-onblur
+                    ng-change="filter.callback()">
 
             </md-input-container>
 
             <md-autocomplete
                 placeholder="Search..."
                 style="display: inline-block;margin-top: 8px;width: 100%;"
-                ng-if="filter.type == 'AUTOCOMPLETE'"
+                ng-if="filter.isAutocomplete()"
                 md-search-text="searchText"
                 md-selected-item-change="value.onSelect(item)"
                 md-items="item in filter.params.querySearch(searchText)"

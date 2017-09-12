@@ -8,6 +8,7 @@ class Directive implements ng.IDirective {
 
     scope = {
         options: '=',
+        config: '=',
         onSelect: '&'
     }
 
@@ -23,6 +24,11 @@ class Directive implements ng.IDirective {
         }
 
         $scope.filters = new Filters($scope.apply);
+
+        if ($scope.config && $scope.config.saveState) {
+            $scope.filters.loadState($scope.options);
+            $scope.apply();
+        }
 
     }
 

@@ -10,7 +10,7 @@ class Value {
         this.skipApply = false;
     }
 
-    private onSelect(value: string): void {
+    public onSelect(value: string): void {
         this.value = value;
         if (!this.skipApply) this.callback();
     }

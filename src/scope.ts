@@ -1,6 +1,11 @@
+interface Config {
+    saveState: boolean;
+}
+
 interface DynamicFilterScope extends ng.IScope {
     filters: Filters;
-    options: any[];
+    options: Option[];
+    config: Config;
     addFilter: any;
     removeFilter: any;
     isFilterSelected: any;

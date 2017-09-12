@@ -1,21 +1,17 @@
 class Filter {
 
-    type: OptionType;
-    field: string;
     values: any[];
-    options: any[];
-    params: any[];
+    option: Option;
     callback: any;
 
     constructor(callback: any) {
-        this.field = null;
         this.values = null;
         this.callback = callback;
     }
 
     private addValue(): void {
         if (!this.canAddValue()) return;
-        this.values.push(new Value(this.callback));
+        this.values.push("");
     }
 
     /**
@@ -24,19 +20,28 @@ class Filter {
     private canAddValue(): boolean {
         if (!this.values) return false;
         let lastValue = this.values[this.values.length - 1];
-        return lastValue.value != null && OptionType[this.type] != OptionType.TEXT.toString();
+        return lastValue != "" && !this.isText();
     }
 
     private onSelect(option: Option): void {
-        this.field = option.field;
-        this.type = option.type;
-        this.options = option.options;
-        this.params = option.params;
-        this.values = [new Value(this.callback)];
+        this.option = option;
+        this.values = [""];
+    }
+
+    private isAutocomplete(): boolean {
+        return OptionType[this.option.type] == OptionType.AUTOCOMPLETE.toString();
+    }
+
+    private isOptions(): boolean {
+        return OptionType[this.option.type] == OptionType.OPTIONS.toString();
+    }
+
+    private isText(): boolean {
+        return OptionType[this.option.type] == OptionType.TEXT.toString();
     }
 
     private getValues(options: Option[]): string[] {
-        var field = this.field;
+        var field = this.option.field;
         var option = options.filter(function(o) {
             return o.field == field;
         });

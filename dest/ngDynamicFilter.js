@@ -6,6 +6,7 @@ class Directive {
         };
         this.scope = {
             options: '=',
+            config: '=',
             onSelect: '&'
         };
     }
@@ -15,6 +16,10 @@ class Directive {
             $scope.onSelect({ result: result });
         };
         $scope.filters = new Filters($scope.apply);
+        if ($scope.config && $scope.config.saveState) {
+            $scope.filters.loadState($scope.options);
+            $scope.apply();
+        }
     }
     validate() {
         console.log(this);
@@ -26,30 +31,35 @@ class Directive {
 angular.module('ngDynamicFilter', []).directive('dynamicFilter', Directive.instance);
 class Filter {
     constructor(callback) {
-        this.field = null;
         this.values = null;
         this.callback = callback;
     }
     addValue() {
         if (!this.canAddValue())
             return;
-        this.values.push(new Value(this.callback));
+        this.values.push("");
     }
     canAddValue() {
         if (!this.values)
             return false;
         let lastValue = this.values[this.values.length - 1];
-        return lastValue.value != null && OptionType[this.type] != OptionType.TEXT.toString();
+        return lastValue != "" && !this.isText();
     }
     onSelect(option) {
-        this.field = option.field;
-        this.type = option.type;
-        this.options = option.options;
-        this.params = option.params;
-        this.values = [new Value(this.callback)];
+        this.option = option;
+        this.values = [""];
+    }
+    isAutocomplete() {
+        return OptionType[this.option.type] == OptionType.AUTOCOMPLETE.toString();
+    }
+    isOptions() {
+        return OptionType[this.option.type] == OptionType.OPTIONS.toString();
+    }
+    isText() {
+        return OptionType[this.option.type] == OptionType.TEXT.toString();
     }
     getValues(options) {
-        var field = this.field;
+        var field = this.option.field;
         var option = options.filter(function (o) {
             return o.field == field;
         });
@@ -63,9 +73,30 @@ class Filters extends Array {
     }
     add() {
         let lastFilter = this[this.length - 1];
-        if (lastFilter && !lastFilter.field)
+        if (lastFilter && !lastFilter.option)
             return;
         this.push(new Filter(this.callback));
+    }
+    loadState(options) {
+        var state = JSON.parse(localStorage.getItem('dynamicFilter'));
+        var self = this;
+        if (!state)
+            return;
+        state.forEach(function (s) {
+            let searchOption = options.filter(function (o) {
+                return o.field == s.option.field;
+            });
+            if (searchOption.length == 0)
+                throw ("Saved state value not found in options array!");
+            self.add();
+            self[self.length - 1].onSelect(searchOption[0]);
+            if (s.values) {
+                s.values.forEach(function (v) {
+                    self[self.length - 1].addValue();
+                    self[self.length - 1].values[self[self.length - 1].values.length - 1] = v;
+                });
+            }
+        });
     }
     removeLast() {
         this.splice(-1, 1);
@@ -84,9 +115,10 @@ class Filters extends Array {
         });
     }
     getResult() {
+        localStorage.setItem('dynamicFilter', JSON.stringify(this));
         return this.map(function (m) {
             var o = {};
-            o[m.field] = m.values.map(function (v) { return v.value; });
+            o[m.option.field] = m.values.map(function (v) { return v; });
             return o;
         });
     }
