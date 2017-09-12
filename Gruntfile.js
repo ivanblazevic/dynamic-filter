@@ -24,7 +24,7 @@ module.exports = function(grunt) {
                     sourceMap: true,
                     declaration: false,
                     module: 'commonjs',
-                    target: 'es5',
+                    target: 'es6',
                     types: [
                         "angular"
                     ],
@@ -62,6 +62,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-ts-concat');
 
     // Default task(s)
-    grunt.registerTask('default', ['clean', 'ts_concat', 'ts', 'clean:concat', 'rename', 'uglify']);
+    grunt.registerTask('default', ['clean', 'ts_concat', 'ts', 'clean:concat', 'rename']);
 
 };
