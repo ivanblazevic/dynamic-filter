@@ -21,16 +21,39 @@ module.exports = function(grunt) {
             default : {
                 src: "dest/concat.ts",
                 options: {
+                    sourceMap: true,
+                    declaration: false,
                     module: 'commonjs',
-                    target: 'es6',
+                    target: 'es5',
                     types: [
                         "angular"
                     ],
                 }
             }
+        },
+
+        rename: {
+            main: {
+                files: [
+                    { src: ['dest/concat.js'], dest: 'dest/ngDynamicFilter.js' },
+                    { src: ['dest/concat.js.map'], dest: 'dest/ngDynamicFilter.js.map' }
+                ]
+            }
+        },
+
+        uglify: {
+            default: {
+                files: {
+                    'dest/ngDynamicFilter.min.js': ['dest/ngDynamicFilter.js']
+                }
+            }
         }
 
     });
+
+    grunt.loadNpmTasks('grunt-contrib-rename');
+
+    grunt.loadNpmTasks('grunt-contrib-uglify');
 
     grunt.loadNpmTasks('grunt-contrib-clean');
 
@@ -39,6 +62,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-ts-concat');
 
     // Default task(s)
-    grunt.registerTask('default', ['clean', 'ts_concat', 'ts', 'clean:concat']);
+    grunt.registerTask('default', ['clean', 'ts_concat', 'ts', 'clean:concat', 'rename', 'uglify']);
 
 };

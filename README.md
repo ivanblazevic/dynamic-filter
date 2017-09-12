@@ -1,6 +1,7 @@
 # Dynamic Filter
 
 Dynamic filter generates JSON key-array object as result which later can be used for querying backend.
+[Dynamic Filter with Angular Material](https://ivanblazevic.github.io/angular-dynamic-filter/)
 
 # Core Features!
 
@@ -31,7 +32,7 @@ Let's see a basic example of option configuration object:
 - **field** - this will be key of object which is generated as a result
     > Usually this is table field
 - **options** - string array for selection
-- **params** - (optional) pass array of custom objects here, e.g. in material design example we passed querySearch param which holds reference to querySearch function from controller. This param is later used in autocomplete dropdown, check here for more details: [Dynamic Filter with Angular Material](https://material.angularjs.org/latest/demo/autocomplete)
+- **params** - (optional) pass array of custom objects here, e.g. in material design example we passed querySearch param which holds reference to querySearch function from controller. This param is later used in autocomplete dropdown, check here for more details: [Dynamic Filter with Angular Material](https://ivanblazevic.github.io/angular-dynamic-filter/)
 
 
 #### OPTIONS
