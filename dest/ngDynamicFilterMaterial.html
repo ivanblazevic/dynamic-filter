@@ -8,17 +8,35 @@
             </md-select>
         </md-input-container>
 
-        <md-input-container ng-repeat="value in filter.values track by $index" style="margin-left: 10px;width: 18%;">
+        <span ng-repeat="value in filter.values track by $index" style="margin-left: 10px;width:18%">
 
-            <md-select ng-model="o" placeholder="Select value" ng-change="value.onSelect(o)" ng-if="filter.type == 'OPTIONS'">
-                <md-option ng-hide="filters.isValueSelected(o)" ng-value="o" ng-repeat="o in filter.options">{{ o }}</md-option>
-            </md-select>
+            <md-input-container style="width: 100%;" ng-if="filter.type != 'AUTOCOMPLETE'">
 
-            <input type="text" name="" ng-model="filter.values[0].value" ng-if="filter.type == 'TEXT'">
+                <md-select ng-model="o" placeholder="Select value" ng-change="value.onSelect(o)" ng-if="filter.type == 'OPTIONS'">
+                    <md-option ng-hide="filters.isValueSelected(o)" ng-value="o" ng-repeat="o in filter.options">{{ o }}</md-option>
+                </md-select>
 
-        </md-input-container>
+                <input type="text" name="" ng-model="filter.values[0].value" ng-if="filter.type == 'TEXT'">
 
-        <md-input-container style="margin-top: 6px;">
+            </md-input-container>
+
+            <md-autocomplete
+                placeholder="Search..."
+                style="display: inline-block;margin-top: 8px;width: 100%;"
+                ng-if="filter.type == 'AUTOCOMPLETE'"
+                md-search-text="searchText"
+                md-selected-item-change="value.onSelect(item)"
+                md-items="item in filter.params.querySearch(searchText)"
+                md-item-text="item"
+                md-min-length="0">
+                <md-item-template>
+                    <span md-highlight-text="ctrl.searchText" md-highlight-flags="^i">{{item}}</span>
+                </md-item-template>
+            </md-autocomplete>
+
+        </span>
+
+        <md-input-container style="margin-top: 2px;">
             <md-button ng-show="filter.canAddValue()" ng-click="filter.addValue()" class="md-fab md-primary" style="height: 20px;width: 37px;">
                 <md-icon class="fa fa-plus" style="vertical-align: bottom;line-height: 25px;"></md-icon>
             </md-button>
