@@ -1,0 +1,14 @@
+{
+  "name": "dynamicFilterMaterial",
+  "version": "1.0.0",
+  "description": "Dynamic Filter example with angular material design",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ivan Blazevic",
+  "license": "MIT",
+  "dependencies": {
+    "http-server": "^0.10.0"
+  }
+}
