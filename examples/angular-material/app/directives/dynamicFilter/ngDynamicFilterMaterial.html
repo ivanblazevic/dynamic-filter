@@ -16,7 +16,8 @@
                     <md-option ng-hide="filters.isValueSelected(o)" ng-value="o" ng-repeat="o in filter.options">{{ o }}</md-option>
                 </md-select>
 
-                <input type="text" name="" ng-model="filter.values[0].value" ng-if="filter.type == 'TEXT'">
+                <input type="text" name="" ng-model="filter.values[0].value" ng-if="filter.type == 'TEXT'" ng-model-onblur ng-change="filter.values[0].callback()">
+
 
             </md-input-container>
 

@@ -97,7 +97,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="item in dataSource | filter:result[0]">
+                <tr ng-repeat="item in dataSource | search:result">
                     <td>{{ item.position }}</td>
                     <td class="mdl-data-table__cell--non-numeric">{{ item.name }}</td>
                     <td>{{ item.weight }}</td>
