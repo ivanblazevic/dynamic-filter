@@ -65,9 +65,7 @@ app.controller("MainCtrl", function($scope, $q, $timeout) {
             type: "AUTOCOMPLETE",
             label: "Material",
             field: "name",
-            params: {
-                querySearch: $scope.querySearch
-            }
+            querySearch: $scope.querySearch
         }
     ]
 
