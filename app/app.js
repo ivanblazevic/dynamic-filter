@@ -71,6 +71,10 @@ app.controller("MainCtrl", function($scope, $q, $timeout) {
         }
     ]
 
+    $scope.filterConfig = {
+        saveState: true
+    }
+
 
 });
 
