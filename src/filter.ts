@@ -1,7 +1,10 @@
 class Filter {
 
+    type: OptionType;
     field: string;
     values: any[];
+    options: any[];
+    params: any[];
     callback: any;
 
     constructor(callback: any) {
@@ -10,7 +13,7 @@ class Filter {
         this.callback = callback;
     }
 
-    private addValue() {
+    private addValue(): void {
         if (!this.canAddValue()) return;
         this.values.push(new Value(this.callback));
     }
@@ -18,18 +21,21 @@ class Filter {
     /**
      * Cannot add value if previous value is not selected yet
      */
-    private canAddValue() {
+    private canAddValue(): boolean {
         if (!this.values) return false;
         let lastValue = this.values[this.values.length - 1];
-        return lastValue.value != null;
+        return lastValue.value != null && OptionType[this.type] != OptionType.TEXT.toString();
     }
 
-    private onSelect(option) {
+    private onSelect(option: Option): void {
         this.field = option.field;
+        this.type = option.type;
+        this.options = option.options;
+        this.params = option.params;
         this.values = [new Value(this.callback)];
     }
 
-    private getOptions(options: any[]) {
+    private getValues(options: Option[]): string[] {
         var field = this.field;
         var option = options.filter(function(o) {
             return o.field == field;

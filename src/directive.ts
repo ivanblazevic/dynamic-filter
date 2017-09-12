@@ -17,31 +17,12 @@ class Directive implements ng.IDirective {
 
     link($scope: DynamicFilterScope, elm: JQuery, attr: ng.IAttributes, ngModel: ng.INgModelController): void {
 
-        $scope.filters = [];
-
-        $scope.addFilter = function() {
-            // Prevent adding filter if no previous selected
-            let lastFilter = $scope.filters[$scope.filters.length - 1];
-            if (lastFilter && !lastFilter.field) return;
-            $scope.filters.push(new Filter($scope.apply));
-        }
-
-        $scope.removeFilter = function() {
-            $scope.filters.splice($scope.filters.length - 1, 1);
-            $scope.apply();
-        }
-
-        /**
-         * Apply filter
-         */
         $scope.apply = function() {
-            var result = $scope.filters.map(function(m) {
-                var o = {};
-                o[m.field] = m.values.map(function(v) { return v.value });
-                return o;
-            });
+            var result = $scope.filters.getResult();
             $scope.onSelect({ result: result });
         }
+
+        $scope.filters = new Filters($scope.apply);
 
     }
 

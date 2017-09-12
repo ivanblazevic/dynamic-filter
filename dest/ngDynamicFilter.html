@@ -3,20 +3,25 @@
     <div ng-repeat="filter in filters">
 
         <select ng-model="o" ng-change="filter.onSelect(o)">
-            <option ng-value="o" ng-repeat="o in options">{{ o.label }}</option>
+            <option ng-hide="filters.isFilterSelected(o)" ng-value="o" ng-repeat="o in options track by $index">{{ o.label }}</option>
         </select>
 
-        <span ng-repeat="value in filter.values">
-            <select ng-model="o" ng-change="value.onSelect(o)">
-                <option ng-value="o" ng-repeat="o in filter.getOptions(options)">{{ o }}</option>
+        <span ng-repeat="value in filter.values track by $index">
+
+            <select ng-model="o" ng-change="value.onSelect(o)" ng-if="filter.type == 'OPTIONS'">
+                <option ng-hide="filters.isValueSelected(o)" ng-value="o" ng-repeat="o in filter.options">{{ o }}</option>
             </select>
+
+            <input type="text" name="" ng-model="filter.values[0].value" ng-if="filter.type == 'TEXT'">
+
         </span>
 
         <a ng-show="filter.canAddValue()" ng-click="filter.addValue()">+</a>
 
     </div>
 
-    <a ng-click="addFilter()">add filter</a>
-    <a ng-click="removeFilter()">remove filter</a>
+    <a ng-click="filters.add()">add filter</a>
+
+    <a ng-click="filters.removeLast()">remove filter</a>
 
 </div>
