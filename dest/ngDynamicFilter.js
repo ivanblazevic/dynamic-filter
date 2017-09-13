@@ -81,28 +81,27 @@ class Filters extends XArray {
         this.push(new Filter(this.callback));
     }
     getOptionByField(options, field) {
-        let searchOption = options.filter(function (o) {
+        let result = options.filter(function (o) {
             return o.field == field;
         });
-        if (searchOption.length == 0)
+        if (result.length == 0)
             throw ("Saved state value not found in options array!");
-        return searchOption[0];
+        return result[0];
     }
     loadState(options) {
         var state = JSON.parse(localStorage.getItem('dynamicFilter'));
-        var self = this;
         if (!state)
             return;
+        var self = this;
         state.forEach(function (s) {
             if (!s.values)
                 return;
             self.add();
             let lastAddedFilter = self.last();
-            let option = this.getOptionByField(options, s.option.field);
+            let option = self.getOptionByField(options, s.option.field);
             lastAddedFilter.onSelect(option);
             s.values.forEach(function (v) {
                 lastAddedFilter.addValue();
-                lastAddedFilter.values[lastAddedFilter.values.length - 1] = v;
                 var lastAddedFilterValue = lastAddedFilter.values.last();
                 lastAddedFilterValue = v;
             });

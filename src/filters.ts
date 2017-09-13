@@ -35,15 +35,13 @@ class Filters extends XArray {
 
             self.add();
             let lastAddedFilter = self.last();
-            let option = this.getOptionByField(options, s.option.field);
+            let option = self.getOptionByField(options, s.option.field);
             lastAddedFilter.onSelect(option);
 
             // add values
             s.values.forEach(function(v) {
                 lastAddedFilter.addValue();
                 lastAddedFilter.values[lastAddedFilter.values.length-1] = v;
-                var lastAddedFilterValue = lastAddedFilter.values.last();
-                lastAddedFilterValue = v;
             });
 
         });
