@@ -47,9 +47,27 @@ module.exports = function(grunt) {
                     'dest/ngDynamicFilter.min.js': ['dest/ngDynamicFilter.js']
                 }
             }
+        },
+
+        browserify: {
+            dist: {
+                files: {
+                    'dest/ngDynamicFilter.js': ['src/filters.ts','src/array.ts']
+                },
+                options: {
+                    plugin: ['tsify'],
+                    browserifyOptions: {
+                        insertGlobalVars: {
+                            someData: function () { return JSON.stringify(someData); }
+                        }
+                    }
+                }
+            }
         }
 
     });
+
+    grunt.loadNpmTasks('grunt-browserify');
 
     grunt.loadNpmTasks('grunt-contrib-rename');
 
@@ -63,5 +81,7 @@ module.exports = function(grunt) {
 
     // Default task(s)
     grunt.registerTask('default', ['clean', 'ts_concat', 'ts', 'clean:concat', 'rename']);
+
+    grunt.registerTask('bo', ['browserify']);
 
 };

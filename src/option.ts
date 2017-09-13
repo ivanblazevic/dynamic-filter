@@ -1,10 +1,10 @@
-enum OptionType {
-    TEXT,
-    AUTOCOMPLETE,
-    OPTIONS
+declare const enum OptionType {
+    TEXT = 'TEXT',
+    AUTOCOMPLETE = 'AUTOCOMPLETE',
+    OPTIONS = 'OPTIONS'
 }
 
-interface Option {
+ interface Option {
     label: string;
     field: string;
     type: OptionType;

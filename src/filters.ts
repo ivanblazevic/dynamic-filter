@@ -1,4 +1,7 @@
-class Filters extends XArray {
+import ExtendedArray from "./ExtendedArray";
+import Filter from "./Filter";
+
+export class Filters extends ExtendedArray {
 
     callback: any;
 
@@ -76,3 +79,11 @@ class Filters extends XArray {
     }
 
 }
+
+// add DynamicFilter to window object
+
+declare global {
+    interface Window { DynamicFilter: any; }
+}
+
+window.DynamicFilter = Filters;

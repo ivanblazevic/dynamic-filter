@@ -1,11 +1,13 @@
-class Filter {
+import ExtendedArray from "./ExtendedArray";
 
-    values: XArray;
+export default class Filter {
+
+    values: ExtendedArray;
     option: Option;
     callback: any;
 
     constructor(callback: any) {
-        this.values = new XArray();
+        this.values = new ExtendedArray();
         this.callback = callback;
     }
 
@@ -15,9 +17,9 @@ class Filter {
     }
 
     /**
-     * Cannot add new value if previous value does not exist
-     * or if type is text, text can only have one value
-     */
+    * Cannot add new value if previous value does not exist
+    * or if type is text, text can only have one value
+    */
     private canAddValue(): boolean {
         return this.values.last() && !this.isText();
     }
@@ -29,7 +31,7 @@ class Filter {
 
     private checkOptionType(optionType: OptionType): boolean {
         if (!this.option) return false;
-        return OptionType[this.option.type] == optionType.toString();
+        return this.option.type == optionType;
     }
 
     private isAutocomplete(): boolean {

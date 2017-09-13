@@ -1,4 +1,7 @@
-class XArray extends Array {
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+class AXArray extends Array {
     last() {
         return this[this.length - 1];
     }
@@ -6,47 +9,28 @@ class XArray extends Array {
         this.splice(-1, 1);
     }
 }
-class Directive {
-    constructor() {
-        this.restrict = 'E';
-        this.templateUrl = function (element, attrs) {
-            return attrs.templateUrl;
-        };
-        this.scope = {
-            options: '=',
-            config: '=',
-            onSelect: '&'
-        };
-    }
-    link($scope, elm, attr, ngModel) {
-        $scope.apply = function () {
-            var result = $scope.filters.getResult();
-            $scope.onSelect({ result: result });
-        };
-        $scope.filters = new Filters($scope.apply);
-        if ($scope.config && $scope.config.saveState) {
-            $scope.filters.loadState($scope.options);
-            $scope.apply();
-        }
-    }
-    validate() {
-        console.log(this);
-    }
-    static instance() {
-        return new Directive();
-    }
-}
-angular.module('ngDynamicFilter', []).directive('dynamicFilter', Directive.instance);
+exports.default = AXArray;
+
+},{}],2:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const ExtendedArray_1 = require("./ExtendedArray");
+//import Option from "./Option";
+//import OptionType from "./Option";
 class Filter {
     constructor(callback) {
-        this.values = new XArray();
+        this.values = new ExtendedArray_1.default();
         this.callback = callback;
     }
     addValue() {
         if (!this.canAddValue())
             return;
-        this.values.push("");
+        this.values.push(""); // add empty value so array can be iterated in html
     }
+    /**
+    * Cannot add new value if previous value does not exist
+    * or if type is text, text can only have one value
+    */
     canAddValue() {
         return this.values.last() && !this.isText();
     }
@@ -57,28 +41,36 @@ class Filter {
     checkOptionType(optionType) {
         if (!this.option)
             return false;
-        return OptionType[this.option.type] == optionType.toString();
+        return this.option.type == optionType;
     }
     isAutocomplete() {
-        return this.checkOptionType(OptionType.AUTOCOMPLETE);
+        return this.checkOptionType("AUTOCOMPLETE" /* AUTOCOMPLETE */);
     }
     isOptions() {
-        return this.checkOptionType(OptionType.OPTIONS);
+        return this.checkOptionType("OPTIONS" /* OPTIONS */);
     }
     isText() {
-        return this.checkOptionType(OptionType.TEXT);
+        return this.checkOptionType("TEXT" /* TEXT */);
     }
 }
-class Filters extends XArray {
+exports.default = Filter;
+
+},{"./ExtendedArray":1}],3:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const ExtendedArray_1 = require("./ExtendedArray");
+const Filter_1 = require("./Filter");
+class Filters extends ExtendedArray_1.default {
     constructor(callback) {
         super();
         this.callback = callback;
     }
     add() {
+        // Prevent adding filter if no previous selected
         let lastFilter = this.last();
         if (lastFilter && !lastFilter.option)
             return;
-        this.push(new Filter(this.callback));
+        this.push(new Filter_1.default(this.callback));
     }
     getOptionByField(options, field) {
         let result = options.filter(function (o) {
@@ -100,10 +92,10 @@ class Filters extends XArray {
             let lastAddedFilter = self.last();
             let option = self.getOptionByField(options, s.option.field);
             lastAddedFilter.onSelect(option);
+            // add values
             s.values.forEach(function (v) {
                 lastAddedFilter.addValue();
-                var lastAddedFilterValue = lastAddedFilter.values.last();
-                lastAddedFilterValue = v;
+                lastAddedFilter.values[lastAddedFilter.values.length - 1] = v;
             });
         });
     }
@@ -132,10 +124,7 @@ class Filters extends XArray {
         });
     }
 }
-var OptionType;
-(function (OptionType) {
-    OptionType[OptionType["TEXT"] = 0] = "TEXT";
-    OptionType[OptionType["AUTOCOMPLETE"] = 1] = "AUTOCOMPLETE";
-    OptionType[OptionType["OPTIONS"] = 2] = "OPTIONS";
-})(OptionType || (OptionType = {}));
-//# sourceMappingURL=concat.js.map
+exports.Filters = Filters;
+window.DynamicFilter = Filters;
+
+},{"./ExtendedArray":1,"./Filter":2}]},{},[3]);
