@@ -1,8 +1,8 @@
 {
   "name": "dynamic-filter",
   "version": "1.0.0",
-  "description": "Angular dynamic filter directive",
-  "main": "Gruntfile.js",
+  "description": "Dynamic filter",
+  "main": "dest/dynamicFilter.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

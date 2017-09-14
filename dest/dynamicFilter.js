@@ -63,6 +63,8 @@ const Filter_1 = require("./Filter");
 class Filters extends ExtendedArray_1.default {
     constructor(options, callback) {
         super();
+        //if (!options) throw ("Options not passed to DynamicFilter constructor!");
+        //if (!callback) throw ("Callback not passed to DynamicFilter constructor!");
         this.options = options;
         this.callback = callback;
     }
@@ -112,7 +114,7 @@ class Filters extends ExtendedArray_1.default {
     isValueSelected(value) {
         return this.some(function (f) {
             return f.values && f.values.some && f.values.some(function (v) {
-                return v.value == value;
+                return v == value;
             });
         });
     }

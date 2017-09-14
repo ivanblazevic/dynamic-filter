@@ -8,6 +8,10 @@ export class Filters extends ExtendedArray {
 
     constructor(options: Option[], callback: any) {
         super();
+
+        //if (!options) throw ("Options not passed to DynamicFilter constructor!");
+        //if (!callback) throw ("Callback not passed to DynamicFilter constructor!");
+
         this.options = options;
         this.callback = callback;
     }
@@ -66,7 +70,7 @@ export class Filters extends ExtendedArray {
     public isValueSelected(value: string): boolean {
         return this.some(function(f) {
             return f.values && f.values.some && f.values.some(function(v) {
-                return v.value == value;
+                return v == value;
             });
         });
     }
@@ -83,9 +87,12 @@ export class Filters extends ExtendedArray {
 }
 
 // add DynamicFilter to window object
-
 declare global {
     interface Window { DynamicFilter: any; }
 }
 
 window.DynamicFilter = Filters;
+
+// for npmJS
+declare var module: any;
+(module).exports = Filters;

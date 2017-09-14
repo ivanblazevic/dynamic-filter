@@ -16,11 +16,10 @@ angular.module('ngDynamicFilter', []).directive('dynamicFilter', function() {
                 $scope.onSelect({ result: result });
             }
 
-            $scope.filters = new DynamicFilter($scope.apply);
+            $scope.filters = new DynamicFilter($scope.options, $scope.apply);
 
             if ($scope.config && $scope.config.saveState) {
-                $scope.filters.loadState($scope.options);
-                $scope.apply();
+                $scope.filters.loadState();
             }
 
         }
