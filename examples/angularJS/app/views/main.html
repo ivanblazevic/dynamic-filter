@@ -1,0 +1,5 @@
+<md-input-container style="width: 18%;">
+    <md-select ng-model="filter.option" placeholder="Select option" ng-change="filter.onSelect(filter.option)" flex="auto">
+        <md-option ng-hide="filters.isFilterSelected(o)" ng-value="o" ng-repeat="o in options">{{ o.label }}</md-option>
+    </md-select>
+</md-input-container>
