@@ -18,8 +18,9 @@ exports.default = AXArray;
 Object.defineProperty(exports, "__esModule", { value: true });
 const ExtendedArray_1 = require("./ExtendedArray");
 class Filter {
-    constructor(callback) {
+    constructor(callback, applyButton) {
         this.callback = callback;
+        this.applyButton = applyButton;
     }
     addValue() {
         if (!this.canAddValue())
@@ -37,6 +38,7 @@ class Filter {
         this.values = new ExtendedArray_1.default();
         this.option = option;
         this.values.push("");
+        this.applyButton.enabled = true;
     }
     checkOptionType(optionType) {
         if (!this.option)
@@ -61,19 +63,49 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const ExtendedArray_1 = require("./ExtendedArray");
 const Filter_1 = require("./Filter");
 class Filters extends ExtendedArray_1.default {
-    constructor(options, callback) {
+    constructor(options, config) {
         super();
         //if (!options) throw ("Options not passed to DynamicFilter constructor!");
         //if (!callback) throw ("Callback not passed to DynamicFilter constructor!");
+        // TODO: should be handled properly; constructor has been called when this.splice is executed?
+        if (!config || !options)
+            return;
         this.options = options;
-        this.callback = callback;
+        this.config = config;
+        // this is passed as object because primitve does not hold reference
+        this.applyButton = { enabled: false };
+    }
+    getID() {
+        return this.config.id || "dynamicFilter";
+    }
+    /**
+     * @force - boolean: used to override config.autoApply
+     */
+    callback(force) {
+        if (!this.config)
+            return;
+        if (this.config.autoApply) {
+            localStorage.setItem(this.getID(), JSON.stringify(this));
+        }
+        if (!force || this.config.autoApply)
+            this.config.callback(this.getResult());
+    }
+    setApplyEnabled() {
+        this.applyButton.enabled = true;
+    }
+    setApplyDisabled() {
+        this.applyButton.enabled = false;
+    }
+    isApplyEnabled() {
+        return this.applyButton.enabled;
     }
     add() {
         // Prevent adding filter if no previous selected
         let lastFilter = this.last();
         if (lastFilter && !lastFilter.option)
             return;
-        this.push(new Filter_1.default(this.callback));
+        this.setApplyDisabled();
+        this.push(new Filter_1.default(this.callback, this.applyButton));
     }
     getOptionByField(options, field) {
         let result = options.filter(function (o) {
@@ -84,7 +116,7 @@ class Filters extends ExtendedArray_1.default {
         return result[0];
     }
     loadState() {
-        var state = JSON.parse(localStorage.getItem('dynamicFilter'));
+        var state = JSON.parse(localStorage.getItem(this.getID()));
         if (!state)
             return;
         var self = this;
@@ -105,6 +137,8 @@ class Filters extends ExtendedArray_1.default {
     removeLast() {
         this.removeLastItem();
         this.callback();
+        if (this.length == 0)
+            this.applyButton.enabled = false;
     }
     isFilterSelected(option) {
         return this.some(function (f) {
@@ -119,7 +153,6 @@ class Filters extends ExtendedArray_1.default {
         });
     }
     getResult() {
-        localStorage.setItem('dynamicFilter', JSON.stringify(this));
         return this.map(function (m) {
             var o = {};
             o[m.option.field] = m.values;
