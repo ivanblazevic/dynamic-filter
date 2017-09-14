@@ -16,13 +16,30 @@ export class Filters extends ExtendedArray {
         if (!config || !options) return;
 
         this.options = options;
+
+        if (config.autoApply == null) config.autoApply = true;
         this.config = config;
-        // this is passed as object because primitve does not hold reference
-        this.applyButton = { enabled: false };
+
+        if (this.config.saveState) {
+            this.loadState();
+            this.config.callback(this.getResult());
+        }
+
     }
 
     private getID(): string {
         return this.config.id || "dynamicFilter";
+    }
+
+    private saveState(): void {
+        // only neccessary stuff will be saved to local storage
+        let filterState = this.map(function(m) {
+            return {
+                option: m.option,
+                values: m.values
+            }
+        });
+        localStorage.setItem(this.getID(), JSON.stringify(filterState));
     }
 
     /**
@@ -30,22 +47,20 @@ export class Filters extends ExtendedArray {
      */
     public callback(force?: boolean): void {
         if (!this.config) return;
-        if (this.config.autoApply) {
-            localStorage.setItem(this.getID(), JSON.stringify(this));
-        }
-        if (!force || this.config.autoApply) this.config.callback(this.getResult());
+        if (this.saveState) this.saveState();
+        if (force || this.config.autoApply) this.config.callback(this.getResult());
     }
 
     private setApplyEnabled() {
-        this.applyButton.enabled = true;
+        this.applyButton = true;
     }
 
     private setApplyDisabled() {
-        this.applyButton.enabled = false;
+        this.applyButton = false;
     }
 
     public isApplyEnabled() {
-        return this.applyButton.enabled;
+        return this.applyButton;
     }
 
     public add(): void {
@@ -53,7 +68,7 @@ export class Filters extends ExtendedArray {
         let lastFilter = this.last();
         if (lastFilter && !lastFilter.option) return;
         this.setApplyDisabled();
-        this.push(new Filter(this.callback, this.applyButton));
+        this.push(new Filter(this));
     }
 
     private getOptionByField(options: Option[], field: string): Option {
@@ -92,7 +107,7 @@ export class Filters extends ExtendedArray {
     public removeLast(): void {
         this.removeLastItem();
         this.callback();
-        if (this.length == 0) this.applyButton.enabled = false;
+        if (this.length == 0) this.applyButton = false;
     }
 
     public isFilterSelected(option): boolean {

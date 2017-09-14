@@ -18,9 +18,9 @@ exports.default = AXArray;
 Object.defineProperty(exports, "__esModule", { value: true });
 const ExtendedArray_1 = require("./ExtendedArray");
 class Filter {
-    constructor(callback, applyButton) {
-        this.callback = callback;
-        this.applyButton = applyButton;
+    constructor(ref) {
+        this.callback = ref.callback;
+        this.ref = ref;
     }
     addValue() {
         if (!this.canAddValue())
@@ -38,7 +38,7 @@ class Filter {
         this.values = new ExtendedArray_1.default();
         this.option = option;
         this.values.push("");
-        this.applyButton.enabled = true;
+        this.ref.setApplyEnabled();
     }
     checkOptionType(optionType) {
         if (!this.option)
@@ -71,12 +71,26 @@ class Filters extends ExtendedArray_1.default {
         if (!config || !options)
             return;
         this.options = options;
+        if (config.autoApply == null)
+            config.autoApply = true;
         this.config = config;
-        // this is passed as object because primitve does not hold reference
-        this.applyButton = { enabled: false };
+        if (this.config.saveState) {
+            this.loadState();
+            this.config.callback(this.getResult());
+        }
     }
     getID() {
         return this.config.id || "dynamicFilter";
+    }
+    saveState() {
+        // only neccessary stuff will be saved to local storage
+        let filterState = this.map(function (m) {
+            return {
+                option: m.option,
+                values: m.values
+            };
+        });
+        localStorage.setItem(this.getID(), JSON.stringify(filterState));
     }
     /**
      * @force - boolean: used to override config.autoApply
@@ -84,20 +98,19 @@ class Filters extends ExtendedArray_1.default {
     callback(force) {
         if (!this.config)
             return;
-        if (this.config.autoApply) {
-            localStorage.setItem(this.getID(), JSON.stringify(this));
-        }
-        if (!force || this.config.autoApply)
+        if (this.saveState)
+            this.saveState();
+        if (force || this.config.autoApply)
             this.config.callback(this.getResult());
     }
     setApplyEnabled() {
-        this.applyButton.enabled = true;
+        this.applyButton = true;
     }
     setApplyDisabled() {
-        this.applyButton.enabled = false;
+        this.applyButton = false;
     }
     isApplyEnabled() {
-        return this.applyButton.enabled;
+        return this.applyButton;
     }
     add() {
         // Prevent adding filter if no previous selected
@@ -105,7 +118,7 @@ class Filters extends ExtendedArray_1.default {
         if (lastFilter && !lastFilter.option)
             return;
         this.setApplyDisabled();
-        this.push(new Filter_1.default(this.callback, this.applyButton));
+        this.push(new Filter_1.default(this));
     }
     getOptionByField(options, field) {
         let result = options.filter(function (o) {
@@ -138,7 +151,7 @@ class Filters extends ExtendedArray_1.default {
         this.removeLastItem();
         this.callback();
         if (this.length == 0)
-            this.applyButton.enabled = false;
+            this.applyButton = false;
     }
     isFilterSelected(option) {
         return this.some(function (f) {

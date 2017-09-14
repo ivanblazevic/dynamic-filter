@@ -5,11 +5,11 @@ export default class Filter {
     values: ExtendedArray;
     option: Option;
     callback: any;
-    applyButton: any;
+    ref: any; // reference to filters array
 
-    constructor(callback: any, applyButton: any) {
-        this.callback = callback;
-        this.applyButton = applyButton;
+    constructor(ref: any) {
+        this.callback = ref.callback;
+        this.ref = ref;
     }
 
     private addValue(): void {
@@ -29,7 +29,7 @@ export default class Filter {
         this.values = new ExtendedArray();
         this.option = option;
         this.values.push("");
-        this.applyButton.enabled = true;
+        this.ref.setApplyEnabled();
     }
 
     private checkOptionType(optionType: OptionType): boolean {
