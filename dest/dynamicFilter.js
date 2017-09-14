@@ -19,7 +19,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const ExtendedArray_1 = require("./ExtendedArray");
 class Filter {
     constructor(callback) {
-        this.values = new ExtendedArray_1.default();
         this.callback = callback;
     }
     addValue() {
@@ -32,9 +31,10 @@ class Filter {
     * or if type is text, text can only have one value
     */
     canAddValue() {
-        return this.values.last() && !this.isText();
+        return this.values && this.values.last() && !this.isText();
     }
     onSelect(option) {
+        this.values = new ExtendedArray_1.default();
         this.option = option;
         this.values.push("");
     }
@@ -129,6 +129,7 @@ class Filters extends ExtendedArray_1.default {
 }
 exports.Filters = Filters;
 window.DynamicFilter = Filters;
+(module).exports = Filters;
 
 },{"./ExtendedArray":2,"./Filter":3}],5:[function(require,module,exports){
 arguments[4][1][0].apply(exports,arguments)

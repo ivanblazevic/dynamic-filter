@@ -15,7 +15,10 @@
   "license": "MIT",
   "devDependencies": {
     "@types/angular": "^1.6.32",
+    "babel-core": "^6.26.0",
+    "babel-preset-env": "^1.6.0",
     "grunt": "^1.0.1",
+    "grunt-babel": "^7.0.0",
     "grunt-browserify": "^5.2.0",
     "grunt-contrib-clean": "^1.1.0",
     "grunt-contrib-rename": "^0.2.0",

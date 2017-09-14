@@ -1,5 +1,6 @@
 module.exports = function(grunt) {
 
+
     // Project configuration.
     grunt.initConfig({
 
@@ -44,7 +45,19 @@ module.exports = function(grunt) {
         uglify: {
             default: {
                 files: {
-                    'dest/dynamicFilter.min.js': ['dest/dynamicFilter.js']
+                    'dest/dynamicFilter.js': ['dest/dynamicFilter.js']
+                }
+            }
+        },
+
+        babel: {
+            options: {
+                sourceMap: true,
+                presets: ['env']
+            },
+            dist: {
+                files: {
+                    'dest/dynamicFilter.js': 'dest/dynamicFilter.js'
                 }
             }
         },
@@ -67,6 +80,8 @@ module.exports = function(grunt) {
 
     });
 
+    grunt.loadNpmTasks('grunt-babel');
+
     grunt.loadNpmTasks('grunt-browserify');
 
     grunt.loadNpmTasks('grunt-contrib-rename');
@@ -80,6 +95,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-ts-concat');
 
     // Default task(s)
-    grunt.registerTask('default', ['clean', 'browserify'/*, 'uglify'*/]);
+    grunt.registerTask('default', ['clean', 'browserify', /*'babel'/*, 'uglify'*/]);
 
 };

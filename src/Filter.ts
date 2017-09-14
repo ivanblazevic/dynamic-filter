@@ -7,7 +7,6 @@ export default class Filter {
     callback: any;
 
     constructor(callback: any) {
-        this.values = new ExtendedArray();
         this.callback = callback;
     }
 
@@ -21,10 +20,11 @@ export default class Filter {
     * or if type is text, text can only have one value
     */
     private canAddValue(): boolean {
-        return this.values.last() && !this.isText();
+        return this.values && this.values.last() && !this.isText();
     }
 
     private onSelect(option: Option): void {
+        this.values = new ExtendedArray();
         this.option = option;
         this.values.push("");
     }
