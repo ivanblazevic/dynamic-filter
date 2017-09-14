@@ -44,7 +44,7 @@ module.exports = function(grunt) {
         uglify: {
             default: {
                 files: {
-                    'dest/ngDynamicFilter.min.js': ['dest/ngDynamicFilter.js']
+                    'dest/dynamicFilter.min.js': ['dest/dynamicFilter.js']
                 }
             }
         },
@@ -52,7 +52,7 @@ module.exports = function(grunt) {
         browserify: {
             dist: {
                 files: {
-                    'dest/ngDynamicFilter.js': ['src/filters.ts','src/array.ts']
+                    'dest/dynamicFilter.js': ['src/*.ts']
                 },
                 options: {
                     plugin: ['tsify'],
@@ -80,8 +80,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-ts-concat');
 
     // Default task(s)
-    grunt.registerTask('default', ['clean', 'ts_concat', 'ts', 'clean:concat', 'rename']);
-
-    grunt.registerTask('bo', ['browserify']);
+    grunt.registerTask('default', ['clean', 'browserify'/*, 'uglify'*/]);
 
 };

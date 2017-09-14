@@ -1,4 +1,6 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+
+},{}],2:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class AXArray extends Array {
@@ -11,12 +13,10 @@ class AXArray extends Array {
 }
 exports.default = AXArray;
 
-},{}],2:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const ExtendedArray_1 = require("./ExtendedArray");
-//import Option from "./Option";
-//import OptionType from "./Option";
 class Filter {
     constructor(callback) {
         this.values = new ExtendedArray_1.default();
@@ -55,14 +55,15 @@ class Filter {
 }
 exports.default = Filter;
 
-},{"./ExtendedArray":1}],3:[function(require,module,exports){
+},{"./ExtendedArray":2}],4:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const ExtendedArray_1 = require("./ExtendedArray");
 const Filter_1 = require("./Filter");
 class Filters extends ExtendedArray_1.default {
-    constructor(callback) {
+    constructor(options, callback) {
         super();
+        this.options = options;
         this.callback = callback;
     }
     add() {
@@ -77,10 +78,10 @@ class Filters extends ExtendedArray_1.default {
             return o.field == field;
         });
         if (result.length == 0)
-            throw ("Saved state value not found in options array!");
+            throw ("Cached option field value " + field + " not found in options array!");
         return result[0];
     }
-    loadState(options) {
+    loadState() {
         var state = JSON.parse(localStorage.getItem('dynamicFilter'));
         if (!state)
             return;
@@ -90,7 +91,7 @@ class Filters extends ExtendedArray_1.default {
                 return;
             self.add();
             let lastAddedFilter = self.last();
-            let option = self.getOptionByField(options, s.option.field);
+            let option = self.getOptionByField(self.options, s.option.field);
             lastAddedFilter.onSelect(option);
             // add values
             s.values.forEach(function (v) {
@@ -127,4 +128,6 @@ class Filters extends ExtendedArray_1.default {
 exports.Filters = Filters;
 window.DynamicFilter = Filters;
 
-},{"./ExtendedArray":1,"./Filter":2}]},{},[3]);
+},{"./ExtendedArray":2,"./Filter":3}],5:[function(require,module,exports){
+arguments[4][1][0].apply(exports,arguments)
+},{"dup":1}]},{},[1,2,3,4,5]);

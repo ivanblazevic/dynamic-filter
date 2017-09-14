@@ -3,10 +3,12 @@ import Filter from "./Filter";
 
 export class Filters extends ExtendedArray {
 
+    options: Option[];
     callback: any;
 
-    constructor(callback: any) {
+    constructor(options: Option[], callback: any) {
         super();
+        this.options = options;
         this.callback = callback;
     }
 
@@ -22,12 +24,12 @@ export class Filters extends ExtendedArray {
             return o.field == field;
         });
 
-        if (result.length == 0) throw("Saved state value not found in options array!");
+        if (result.length == 0) throw("Cached option field value " + field + " not found in options array!");
 
         return result[0];
     }
 
-    public loadState(options: Option[]): void {
+    public loadState(): void {
         var state = JSON.parse(localStorage.getItem('dynamicFilter'));
         if (!state) return;
 
@@ -38,7 +40,7 @@ export class Filters extends ExtendedArray {
 
             self.add();
             let lastAddedFilter = self.last();
-            let option = self.getOptionByField(options, s.option.field);
+            let option = self.getOptionByField(self.options, s.option.field);
             lastAddedFilter.onSelect(option);
 
             // add values
