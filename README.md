@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/ivanblazevic/dynamic-filter.svg?branch=master)](https://travis-ci.org/ivanblazevic/dynamic-filter)
 [![Coverage Status](https://coveralls.io/repos/ivanblazevic/dynamic-filter/badge.svg?branch=master&service=github)](https://coveralls.io/github/ivanblazevic/dynamic-filter?branch=master)
-<img src="https://david-dm.org/ivanblazevic/dynamic-filter.svg"/>
+[![devDependencies Status](https://david-dm.org/ivanblazevic/dynamic-filter/dev-status.svg)](https://david-dm.org/ivanblazevic/dynamic-filter?type=dev)
 
 # Dynamic Filter
 
