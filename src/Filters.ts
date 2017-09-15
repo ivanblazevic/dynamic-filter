@@ -13,8 +13,6 @@ export class Filters extends ExtendedArray {
         // TODO: should be handled properly; constructor has been called when this.splice is executed?
         if (!config || !options) return;
 
-        this.options = options;
-
         if (config.autoApply == null) config.autoApply = true;
         this.config = config;
 
@@ -122,8 +120,13 @@ export class Filters extends ExtendedArray {
     }
 
     public getResult = (): any => {
+        let self = this;
         return this.map(function(m) {
             var o: any = {};
+            if (!m.option) {
+                if (self.config.errorCallback) self.config.errorCallback("Select option before getting result");
+                throw ("Select option before getting result");
+            }
             o[m.option.field] = m.values;
             return o;
         });

@@ -7,14 +7,19 @@ describe("HelloComponent", () => {
 
     }
 
+    let errorCallback = function() {
+
+    }
+
     let config: Config = {
         id: 'dynamicFilter',
         saveState: true,
-        autoApply: false,
-        callback: callback
+        autoApply: null,
+        callback: callback,
+        errorCallback: errorCallback
     }
 
-    let dynamicFilter = new Filters(null, null);
+    let dynamicFilter = new Filters(null, config);
 
     it("should init dynamic filter'", () => {
         expect(dynamicFilter.getResult()).toEqual([]);
@@ -23,7 +28,6 @@ describe("HelloComponent", () => {
     it("should add filter'", () => {
         dynamicFilter.add();
 
-    
         expect(dynamicFilter.getResult()).toEqual([]);
     });
 
