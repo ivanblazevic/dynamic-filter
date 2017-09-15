@@ -3,11 +3,9 @@ import Filter from "./Filter";
 
 export class Filters extends ExtendedArray {
 
-    options: Option[];
-    config: Config;
     applyButton: any;
 
-    constructor(options: Option[], config: Config) {
+    constructor(private options: Option[], private config: Config) {
         super();
 
         //if (!options) throw ("Options not passed to DynamicFilter constructor!");
@@ -24,7 +22,6 @@ export class Filters extends ExtendedArray {
             this.loadState();
             this.config.callback(this.getResult());
         }
-
     }
 
     private getID(): string {
@@ -51,19 +48,19 @@ export class Filters extends ExtendedArray {
         if (force || this.config.autoApply) this.config.callback(this.getResult());
     }
 
-    private setApplyEnabled() {
+    private setApplyEnabled = () => {
         this.applyButton = true;
     }
 
-    private setApplyDisabled() {
+    private setApplyDisabled = () => {
         this.applyButton = false;
     }
 
-    public isApplyEnabled() {
+    public isApplyEnabled = () => {
         return this.applyButton;
     }
 
-    public add(): void {
+    public add = (): void => {
         // Prevent adding filter if no previous selected
         let lastFilter = this.last();
         if (lastFilter && !lastFilter.option) return;
@@ -87,7 +84,7 @@ export class Filters extends ExtendedArray {
 
         var self = this;
 
-        state.forEach(function (s) {
+        state.forEach(function (s: Filter) {
             if (!s.values) return;
 
             self.add();
@@ -110,7 +107,7 @@ export class Filters extends ExtendedArray {
         if (this.length == 0) this.applyButton = false;
     }
 
-    public isFilterSelected(option): boolean {
+    public isFilterSelected(option: Option): boolean {
         return this.some(function(f) {
             return f.option && f.option.field == option.field;
         });
@@ -118,15 +115,15 @@ export class Filters extends ExtendedArray {
 
     public isValueSelected(value: string): boolean {
         return this.some(function(f) {
-            return f.values && f.values.some && f.values.some(function(v) {
+            return f.values && f.values.some && f.values.some(function(v: string) {
                 return v == value;
             });
         });
     }
 
-    private getResult(): any {
+    public getResult = (): any => {
         return this.map(function(m) {
-            var o = {};
+            var o: any = {};
             o[m.option.field] = m.values;
             return o;
         });
@@ -140,7 +137,3 @@ declare global {
 }
 
 window.DynamicFilter = Filters;
-
-// for npmJS
-declare var module: any;
-(module).exports = Filters;

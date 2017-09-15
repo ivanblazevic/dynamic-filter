@@ -76,9 +76,22 @@ module.exports = function(grunt) {
                     }
                 }
             }
+        },
+
+        karma: {
+            options: {
+                configFile: 'karma.conf.js'
+            },
+
+            continuous: {
+                logLevel:  'INFO',
+            //    singleRun: false,
+            }
         }
 
     });
+
+    grunt.loadNpmTasks('grunt-karma');
 
     grunt.loadNpmTasks('grunt-babel');
 
@@ -96,5 +109,7 @@ module.exports = function(grunt) {
 
     // Default task(s)
     grunt.registerTask('default', ['clean', 'browserify', /*'babel'/*, 'uglify'*/]);
+
+    grunt.registerTask('test', ['karma']);
 
 };

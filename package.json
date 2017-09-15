@@ -15,6 +15,7 @@
   "license": "MIT",
   "devDependencies": {
     "@types/angular": "^1.6.32",
+    "@types/jasmine": "^2.6.0",
     "babel-core": "^6.26.0",
     "babel-preset-env": "^1.6.0",
     "grunt": "^1.0.1",
@@ -23,9 +24,19 @@
     "grunt-contrib-clean": "^1.1.0",
     "grunt-contrib-rename": "^0.2.0",
     "grunt-contrib-uglify": "^3.1.0",
+    "grunt-karma": "^2.0.0",
     "grunt-ts": "^6.0.0-beta.16",
     "grunt-ts-concat": "^0.2.2",
     "grunt-typescript": "^0.8.0",
+    "jasmine-core": "^2.8.0",
+    "karma": "^1.7.1",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-coverage": "^1.1.1",
+    "karma-jasmine": "^1.1.0",
+    "karma-phantomjs-launcher": "^1.0.4",
+    "karma-typescript": "^3.0.5",
+    "karma-typescript-es6-transform": "^1.0.2",
+    "phantomjs": "^2.1.7",
     "tsify": "^3.0.3",
     "typescript": "^2.5.2"
   }
