@@ -1,5 +1,7 @@
 module.exports = function(grunt) {
 
+    grunt.config.set("singleRun", false);
+
     // Project configuration.
     grunt.initConfig({
 
@@ -53,7 +55,7 @@ module.exports = function(grunt) {
 
             continuous: {
                 logLevel:  'INFO',
-                singleRun: true,
+                singleRun: grunt.option('travis') == true ? true : false,
             }
         },
 
@@ -87,9 +89,5 @@ module.exports = function(grunt) {
     grunt.registerTask('default', ['clean', 'browserify', 'babel', 'uglify']);
 
     grunt.registerTask('test', ['karma', 'coveralls']);
-
-    grunt.registerTask('so', function(arg1, arg2) {
-        console.log(arg1 + ", " + arg2);
-    });
 
 };

@@ -4,7 +4,7 @@
   "description": "Dynamic filter",
   "main": "dest/dynamicFilter.js",
   "scripts": {
-    "test": "grunt test"
+    "test": "grunt test --travis=true"
   },
   "keywords": [
     "angular",
