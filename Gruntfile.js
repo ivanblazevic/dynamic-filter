@@ -88,4 +88,8 @@ module.exports = function(grunt) {
 
     grunt.registerTask('test', ['karma']);
 
+    grunt.registerTask('so', function(arg1, arg2) {
+        console.log(arg1 + ", " + arg2);
+    });
+
 };
