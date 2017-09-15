@@ -4,7 +4,7 @@ export default class AXArray extends Array {
         return this[this.length - 1];
     }
 
-    removeLastItem(): void {
+    removeLastItem = (): void => {
         this.splice(-1, 1);
     }
 

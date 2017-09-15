@@ -45,7 +45,7 @@ module.exports = function(grunt) {
         uglify: {
             default: {
                 files: {
-                    'dest/dynamicFilter.js': ['dest/dynamicFilter.js']
+                    'dest/dynamicFilter.min.js': ['dest/dynamicFilter.js']
                 }
             }
         },
@@ -108,7 +108,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-ts-concat');
 
     // Default task(s)
-    grunt.registerTask('default', ['clean', 'browserify', /*'babel'/*, 'uglify'*/]);
+    grunt.registerTask('default', ['clean', 'browserify', 'babel', 'uglify']);
 
     grunt.registerTask('test', ['karma']);
 

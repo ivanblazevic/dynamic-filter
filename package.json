@@ -4,7 +4,7 @@
   "description": "Dynamic filter",
   "main": "dest/dynamicFilter.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "grunt test"
   },
   "keywords": [
     "angular",
