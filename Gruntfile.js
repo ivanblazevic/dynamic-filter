@@ -53,7 +53,7 @@ module.exports = function(grunt) {
 
             continuous: {
                 logLevel:  'INFO',
-            //    singleRun: false,
+                singleRun: true,
             }
         },
 
