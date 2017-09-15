@@ -26,7 +26,7 @@ export class Filters extends ExtendedArray {
         return this.config.id || "dynamicFilter";
     }
 
-    private saveState = (): void => {
+    private save = (): void => {
         // only neccessary stuff will be saved to local storage
         let filterState = this.map(function(m) {
             return {
@@ -42,7 +42,7 @@ export class Filters extends ExtendedArray {
      */
     public callback = (force?: boolean): void => {
         if (!this.config) return;
-        if (this.saveState) this.saveState();
+        if (this.config.saveState) this.save();
         if (force || this.config.autoApply) this.config.callback(this.getResult());
     }
 

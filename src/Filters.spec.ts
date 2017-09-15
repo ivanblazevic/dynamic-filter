@@ -12,7 +12,7 @@ describe("Filters", () => {
 
     let config: Config = {
         id: 'dynamicFilter',
-        saveState: true,
+        saveState: false,
         autoApply: false,
         callback: callback,
         errorCallback: errorCallback
@@ -24,6 +24,12 @@ describe("Filters", () => {
             label: 'test label',
             field: 'test_field',
             options: ["test1", "test2"]
+        },
+        {
+            type: OptionType.AUTOCOMPLETE,
+            label: 'test autocmplete',
+            field: 'test_autocomplete',
+            options: ["test_autocomplete1"]
         }
     ];
 
@@ -63,6 +69,27 @@ describe("Filters", () => {
     it("should add second value", () => {
         dynamicFilter[0].addValue();
         expect(dynamicFilter[0].values.length).toBe(2);
+    });
+
+    it("should select autocomplete option and first value", () => {
+        dynamicFilter.add();
+        let selectedOption = options[1];
+        dynamicFilter[1].onSelect(selectedOption);
+        expect(dynamicFilter.length).toBe(2);
+        expect(dynamicFilter[1].isAutocomplete()).toBeTruthy();
+    });
+
+    it("should remove last filter selected", () => {
+        dynamicFilter.removeLast()
+        expect(dynamicFilter.length).toBe(1);
+    });
+
+    xit("should load last state of the filter", () => {
+        config.saveState = true;
+        let dynamicFilterSaveState = new Filters(options, config);
+
+        dynamicFilterSaveState.loadState();
+        expect(dynamicFilterSaveState.length).toBe(1);
     });
 
 });
