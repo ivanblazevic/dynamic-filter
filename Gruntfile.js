@@ -62,8 +62,8 @@ module.exports = function(grunt) {
         coveralls: {
             options: {
                 debug: true,
-                coverageDir: 'coverage/PhantomJS 2.1.1 (Mac OS X 0.0.0)',
-                dryRun: true,
+                coverageDir: 'coverage/',
+                dryRun: false,
                 force: true,
                 recursive: true
             }
