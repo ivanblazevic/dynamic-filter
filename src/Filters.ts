@@ -111,14 +111,6 @@ export class Filters extends ExtendedArray {
         });
     }
 
-    public isValueSelected = (value: string): boolean => {
-        return this.some(function(f) {
-            return f.values && f.values.some && f.values.some(function(v: string) {
-                return v == value;
-            });
-        });
-    }
-
     public getResult = (): any => {
         let self = this;
         return this.map(function(m) {

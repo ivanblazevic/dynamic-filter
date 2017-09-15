@@ -53,5 +53,16 @@ describe("Filters", () => {
         expect(dynamicFilter.isFilterSelected(selectedOption)).toBeTruthy();
     });
 
+    it("should selected value for first option", () => {
+        dynamicFilter[0].values[0] = ["test1"];
+        expect(dynamicFilter[0].canAddValue()).toBeTruthy();
+        expect(dynamicFilter[0].isOptions()).toBeTruthy();
+        expect(dynamicFilter[0].isValueSelected("test1")).toBeTruthy();
+    });
+
+    it("should add second value", () => {
+        dynamicFilter[0].addValue();
+        expect(dynamicFilter[0].values.length).toBe(2);
+    });
 
 });
