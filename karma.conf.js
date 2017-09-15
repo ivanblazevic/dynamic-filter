@@ -11,7 +11,7 @@ module.exports = function(config) {
             "**/*.ts": ["karma-typescript"]
         },
 
-        reporters: ["dots", "karma-typescript"],
+        reporters: ["dots", "karma-typescript", "coverage"],
 
         browsers: ["PhantomJS"],
 

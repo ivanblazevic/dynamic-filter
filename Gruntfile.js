@@ -86,7 +86,7 @@ module.exports = function(grunt) {
     // Default task(s)
     grunt.registerTask('default', ['clean', 'browserify', 'babel', 'uglify']);
 
-    grunt.registerTask('test', ['karma']);
+    grunt.registerTask('test', ['karma', 'coveralls']);
 
     grunt.registerTask('so', function(arg1, arg2) {
         console.log(arg1 + ", " + arg2);
