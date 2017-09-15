@@ -5,7 +5,7 @@ export class Filters extends ExtendedArray {
 
     applyButton: any;
 
-    constructor(private options: Option[], private config: Config) {
+    constructor(private options: Option[], public config: Config) {
         super();
 
         if (!options) throw ("Options not passed to DynamicFilter constructor!");
@@ -21,7 +21,7 @@ export class Filters extends ExtendedArray {
             this.config.callback(this.getResult());
         }
     }
-    
+
     private getID = (): string => {
         return this.config.id || "dynamicFilter";
     }
@@ -124,12 +124,13 @@ export class Filters extends ExtendedArray {
         return this.map(function(m) {
             var o: any = {};
             if (!m.option) {
-                if (self.config.errorCallback) self.config.errorCallback("Select option before getting result");
-                throw ("Select option before getting result");
+                if (self.config.errorCallback) self.config.errorCallback({ code: 2, message: "Select option before getting result" });
+                return;
             }
-            o[m.option.field] = m.values;
+            // mapping to loose all functions and other unnesesasrry properties
+            o[m.option.field] = m.values.map(function(m: string) { return m; });
             return o;
-        });
+        })[0];
     }
 
 }

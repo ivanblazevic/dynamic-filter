@@ -9,5 +9,4 @@ declare const enum OptionType {
     field: string;
     type: OptionType;
     options: string[];
-    params: any[];
 }
