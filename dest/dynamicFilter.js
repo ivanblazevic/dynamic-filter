@@ -70,6 +70,30 @@ class Filters extends ExtendedArray_1.default {
         super();
         this.options = options;
         this.config = config;
+        this.getID = () => {
+            return this.config.id || "dynamicFilter";
+        };
+        this.saveState = () => {
+            // only neccessary stuff will be saved to local storage
+            let filterState = this.map(function (m) {
+                return {
+                    option: m.option,
+                    values: m.values
+                };
+            });
+            localStorage.setItem(this.getID(), JSON.stringify(filterState));
+        };
+        /**
+         * @force - boolean: used to override config.autoApply
+         */
+        this.callback = (force) => {
+            if (!this.config)
+                return;
+            if (this.saveState)
+                this.saveState();
+            if (force || this.config.autoApply)
+                this.config.callback(this.getResult());
+        };
         this.setApplyEnabled = () => {
             this.applyButton = true;
         };
@@ -87,6 +111,51 @@ class Filters extends ExtendedArray_1.default {
             this.setApplyDisabled();
             this.push(new Filter_1.default(this));
         };
+        this.getOptionByField = (options, field) => {
+            let result = options.filter(function (o) {
+                return o.field == field;
+            });
+            if (result.length == 0)
+                throw ("Cached option field value " + field + " not found in options array!");
+            return result[0];
+        };
+        this.loadState = () => {
+            var state = JSON.parse(localStorage.getItem(this.getID()));
+            if (!state)
+                return;
+            var self = this;
+            state.forEach(function (s) {
+                if (!s.values)
+                    return;
+                self.add();
+                let lastAddedFilter = self.last();
+                let option = self.getOptionByField(self.options, s.option.field);
+                lastAddedFilter.onSelect(option);
+                // add values
+                s.values.forEach(function (v) {
+                    lastAddedFilter.addValue();
+                    lastAddedFilter.values[lastAddedFilter.values.length - 1] = v;
+                });
+            });
+        };
+        this.removeLast = () => {
+            this.removeLastItem();
+            this.callback();
+            if (this.length == 0)
+                this.applyButton = false;
+        };
+        this.isFilterSelected = (option) => {
+            return this.some(function (f) {
+                return f.option && f.option.field == option.field;
+            });
+        };
+        this.isValueSelected = (value) => {
+            return this.some(function (f) {
+                return f.values && f.values.some && f.values.some(function (v) {
+                    return v == value;
+                });
+            });
+        };
         this.getResult = () => {
             let self = this;
             return this.map(function (m) {
@@ -100,11 +169,12 @@ class Filters extends ExtendedArray_1.default {
                 return o;
             });
         };
-        //if (!options) throw ("Options not passed to DynamicFilter constructor!");
-        //if (!callback) throw ("Callback not passed to DynamicFilter constructor!");
+        if (!options)
+            throw ("Options not passed to DynamicFilter constructor!");
+        if (!config)
+            throw ("Callback not passed to DynamicFilter constructor!");
         // TODO: should be handled properly; constructor has been called when this.splice is executed?
-        if (!config || !options)
-            return;
+        //if (!config || !options) return;
         if (config.autoApply == null)
             config.autoApply = true;
         this.config = config;
@@ -112,75 +182,6 @@ class Filters extends ExtendedArray_1.default {
             this.loadState();
             this.config.callback(this.getResult());
         }
-    }
-    getID() {
-        return this.config.id || "dynamicFilter";
-    }
-    saveState() {
-        // only neccessary stuff will be saved to local storage
-        let filterState = this.map(function (m) {
-            return {
-                option: m.option,
-                values: m.values
-            };
-        });
-        localStorage.setItem(this.getID(), JSON.stringify(filterState));
-    }
-    /**
-     * @force - boolean: used to override config.autoApply
-     */
-    callback(force) {
-        if (!this.config)
-            return;
-        if (this.saveState)
-            this.saveState();
-        if (force || this.config.autoApply)
-            this.config.callback(this.getResult());
-    }
-    getOptionByField(options, field) {
-        let result = options.filter(function (o) {
-            return o.field == field;
-        });
-        if (result.length == 0)
-            throw ("Cached option field value " + field + " not found in options array!");
-        return result[0];
-    }
-    loadState() {
-        var state = JSON.parse(localStorage.getItem(this.getID()));
-        if (!state)
-            return;
-        var self = this;
-        state.forEach(function (s) {
-            if (!s.values)
-                return;
-            self.add();
-            let lastAddedFilter = self.last();
-            let option = self.getOptionByField(self.options, s.option.field);
-            lastAddedFilter.onSelect(option);
-            // add values
-            s.values.forEach(function (v) {
-                lastAddedFilter.addValue();
-                lastAddedFilter.values[lastAddedFilter.values.length - 1] = v;
-            });
-        });
-    }
-    removeLast() {
-        this.removeLastItem();
-        this.callback();
-        if (this.length == 0)
-            this.applyButton = false;
-    }
-    isFilterSelected(option) {
-        return this.some(function (f) {
-            return f.option && f.option.field == option.field;
-        });
-    }
-    isValueSelected(value) {
-        return this.some(function (f) {
-            return f.values && f.values.some && f.values.some(function (v) {
-                return v == value;
-            });
-        });
     }
 }
 exports.Filters = Filters;
