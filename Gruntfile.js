@@ -65,7 +65,7 @@ module.exports = function(grunt) {
         browserify: {
             dist: {
                 files: {
-                    'dest/dynamicFilter.js': ['src/*.ts']
+                    'dest/dynamicFilter.js': ['src/*.ts','!src/*.spec.ts']
                 },
                 options: {
                     plugin: ['tsify'],
