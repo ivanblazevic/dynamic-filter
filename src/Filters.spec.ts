@@ -29,9 +29,7 @@ describe("HelloComponent", () => {
     it("should add filter'", () => {
         dynamicFilter.add();
 
-        //expect(dynamicFilter.getResult()).toEqual([]);
-
-        expect(1).toBe(1);
+        expect(dynamicFilter.isApplyEnabled()).toEqual(false);
     });
 
 });
