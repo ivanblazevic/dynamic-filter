@@ -13,6 +13,12 @@ module.exports = function(config) {
 
         reporters: ["dots", "karma-typescript"],
 
-        browsers: ["PhantomJS"]
+        browsers: ["PhantomJS"],
+
+        coverageReporter: {
+            type: "lcov",
+            dir: "coverage/"
+        },
+
     });
 };
