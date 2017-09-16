@@ -1,7 +1,7 @@
 {
   "name": "dynamic-filter",
-  "version": "1.0.1",
-  "description": "Dynamic filter",
+  "version": "1.0.4",
+  "description": "Dynamic filter generates JSON key-array object as a result of user selection. This is generic library which can be implemented in any JS framework.",
   "main": "dest/dynamicFilter.js",
   "scripts": {
     "test": "grunt test --travis=true"
@@ -9,7 +9,16 @@
   "keywords": [
     "angular",
     "dynamic",
-    "filter"
+    "filter",
+    "dynamic",
+    "typeahead",
+    "autocomplete",
+    "dropdown",
+    "selection",
+    "angular",
+    "react",
+    "search",
+    "json"
   ],
   "author": "Ivan Blažević",
   "license": "MIT",

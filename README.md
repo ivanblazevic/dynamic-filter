@@ -2,7 +2,7 @@
 
 # Dynamic Filter
 
-Dynamic filter generates JSON key-array object as result of user selection. This is generic library which can be implemented in any JS framework.
+Dynamic filter generates JSON key-array object as a result of user selection. This is generic library which can be implemented in any JS framework.
 Checkout examples for major JS frameworks bellow:
 
 ### AngularJS EXAMPLE: [Dynamic Filter with AngularJS](https://ivanblazevic.github.io/angular-dynamic-filter/)
