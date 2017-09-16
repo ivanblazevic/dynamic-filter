@@ -1,6 +1,11 @@
 import ExtendedArray from "./ExtendedArray";
 import Filter from "./Filter";
 
+export interface FilterState {
+    field: string,
+    values: string[]
+}
+
 export class Filters extends ExtendedArray {
 
     applyButton: any;
@@ -28,9 +33,9 @@ export class Filters extends ExtendedArray {
 
     private save = (): void => {
         // only neccessary stuff will be saved to local storage
-        let filterState = this.map(function(m) {
+        let filterState: FilterState[] = this.map(function(m) {
             return {
-                option: m.option,
+                field: m.option.field,
                 values: m.values
             }
         });
@@ -77,17 +82,17 @@ export class Filters extends ExtendedArray {
     }
 
     public loadState = (): void => {
-        var state = JSON.parse(localStorage.getItem(this.getID()));
+        let state:FilterState[] = JSON.parse(localStorage.getItem(this.getID()));
         if (!state) return;
 
         var self = this;
 
-        state.forEach(function (s: Filter) {
+        state.forEach(function (s) {
             if (!s.values) return;
 
             self.add();
             let lastAddedFilter = self.last();
-            let option = self.getOptionByField(self.options, s.option.field);
+            let option = self.getOptionByField(self.options, s.field);
             lastAddedFilter.onSelect(option);
 
             // add values

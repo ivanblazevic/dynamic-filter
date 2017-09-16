@@ -1,4 +1,5 @@
 import { Filters } from "./Filters";
+import { FilterState } from "./Filters";
 
 describe("Filters", () => {
 
@@ -36,6 +37,7 @@ describe("Filters", () => {
     let dynamicFilter = new Filters(options, config);
 
     it("should init dynamic filter'", () => {
+        localStorage.setItem("dynamicFilter", null);
         expect(dynamicFilter.getResult()).toEqual(undefined);
     });
 
@@ -84,12 +86,38 @@ describe("Filters", () => {
         expect(dynamicFilter.length).toBe(1);
     });
 
-    xit("should load last state of the filter", () => {
+    it("should check if lastState works properly", () => {
+
+        let filterState: FilterState[] = [
+            {
+                field: 'test_field',
+                values: ["test1"]
+            }
+        ]
+
+        localStorage.setItem("dynamicFilter", JSON.stringify(filterState));
+
         config.saveState = true;
         let dynamicFilterSaveState = new Filters(options, config);
 
-        dynamicFilterSaveState.loadState();
         expect(dynamicFilterSaveState.length).toBe(1);
+        expect(dynamicFilterSaveState[0].option).toBe(options[0]);
+    });
+
+    it("should check if saveState works properly", () => {
+        config.saveState = true;
+        let dynamicFilterSaveState = new Filters(options, config);
+
+        dynamicFilterSaveState.add();
+        let selectedOption = options[1];
+        dynamicFilterSaveState[1].onSelect(selectedOption);
+        dynamicFilterSaveState[1].values[0] = "testX";
+        dynamicFilterSaveState.callback();
+
+        var state = JSON.parse(localStorage.getItem("dynamicFilter"));
+
+        expect(state.length).toBe(2);
+        expect(state[1]).toEqual({field:'test_autocomplete', values:["testX"]});
     });
 
 });
