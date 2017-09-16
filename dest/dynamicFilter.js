@@ -1,7 +1,5 @@
 "use strict";
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -52,63 +50,49 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
         Object.defineProperty(exports, "__esModule", { value: true });
         var ExtendedArray_1 = require("./ExtendedArray");
 
-        var Filter = function () {
-            function Filter(ref) {
-                _classCallCheck(this, Filter);
+        var Filter = function Filter(ref) {
+            var _this2 = this;
 
-                this.callback = ref.callback;
-                this.ref = ref;
-            }
+            _classCallCheck(this, Filter);
 
-            _createClass(Filter, [{
-                key: "addValue",
-                value: function addValue() {
-                    if (!this.canAddValue()) return;
-                    this.values.push(""); // add empty value so array can be iterated in html
-                }
-                /**
-                * Cannot add new value if previous value does not exist
-                * or if type is text, text can only have one value
-                */
-
-            }, {
-                key: "canAddValue",
-                value: function canAddValue() {
-                    return this.values && this.values.last() && !this.isText();
-                }
-            }, {
-                key: "onSelect",
-                value: function onSelect(option) {
-                    this.values = new ExtendedArray_1.default();
-                    this.option = option;
-                    this.values.push("");
-                    this.ref.setApplyEnabled();
-                }
-            }, {
-                key: "checkOptionType",
-                value: function checkOptionType(optionType) {
-                    if (!this.option) return false;
-                    return this.option.type == optionType;
-                }
-            }, {
-                key: "isAutocomplete",
-                value: function isAutocomplete() {
-                    return this.checkOptionType("AUTOCOMPLETE" /* AUTOCOMPLETE */);
-                }
-            }, {
-                key: "isOptions",
-                value: function isOptions() {
-                    return this.checkOptionType("OPTIONS" /* OPTIONS */);
-                }
-            }, {
-                key: "isText",
-                value: function isText() {
-                    return this.checkOptionType("TEXT" /* TEXT */);
-                }
-            }]);
-
-            return Filter;
-        }();
+            this.addValue = function () {
+                if (!_this2.canAddValue()) return;
+                _this2.values.push(""); // add empty value so array can be iterated in html
+            };
+            /**
+            * Cannot add new value if previous value does not exist
+            * or if type is text, text can only have one value
+            */
+            this.canAddValue = function () {
+                return _this2.values && _this2.values.last() && !_this2.isText();
+            };
+            this.onSelect = function (option) {
+                _this2.values = new ExtendedArray_1.default();
+                _this2.option = option;
+                _this2.values.push("");
+                _this2.filters.setApplyEnabled();
+            };
+            this.isValueSelected = function (value) {
+                return _this2.values.some(function (v) {
+                    return v == value;
+                });
+            };
+            this.checkOptionType = function (optionType) {
+                if (!_this2.option) return false;
+                return _this2.option.type == optionType;
+            };
+            this.isAutocomplete = function () {
+                return _this2.checkOptionType("AUTOCOMPLETE" /* AUTOCOMPLETE */);
+            };
+            this.isOptions = function () {
+                return _this2.checkOptionType("OPTIONS" /* OPTIONS */);
+            };
+            this.isText = function () {
+                return _this2.checkOptionType("TEXT" /* TEXT */);
+            };
+            this.callback = ref.callback;
+            this.filters = ref;
+        };
 
         exports.default = Filter;
     }, { "./ExtendedArray": 2 }], 4: [function (require, module, exports) {
@@ -124,63 +108,63 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
             function Filters(options, config) {
                 _classCallCheck(this, Filters);
 
-                var _this2 = _possibleConstructorReturn(this, (Filters.__proto__ || Object.getPrototypeOf(Filters)).call(this));
+                var _this3 = _possibleConstructorReturn(this, (Filters.__proto__ || Object.getPrototypeOf(Filters)).call(this));
 
-                _this2.options = options;
-                _this2.config = config;
-                _this2.getID = function () {
-                    return _this2.config.id || "dynamicFilter";
+                _this3.options = options;
+                _this3.config = config;
+                _this3.getID = function () {
+                    return _this3.config.id || "dynamicFilter";
                 };
-                _this2.saveState = function () {
+                _this3.save = function () {
                     // only neccessary stuff will be saved to local storage
-                    var filterState = _this2.map(function (m) {
+                    var filterState = _this3.map(function (m) {
                         return {
-                            option: m.option,
+                            field: m.option.field,
                             values: m.values
                         };
                     });
-                    localStorage.setItem(_this2.getID(), JSON.stringify(filterState));
+                    localStorage.setItem(_this3.getID(), JSON.stringify(filterState));
                 };
                 /**
                  * @force - boolean: used to override config.autoApply
                  */
-                _this2.callback = function (force) {
-                    if (!_this2.config) return;
-                    if (_this2.saveState) _this2.saveState();
-                    if (force || _this2.config.autoApply) _this2.config.callback(_this2.getResult());
+                _this3.callback = function (force) {
+                    if (!_this3.config) return;
+                    if (_this3.config.saveState) _this3.save();
+                    if (force || _this3.config.autoApply) _this3.config.callback(_this3.getResult());
                 };
-                _this2.setApplyEnabled = function () {
-                    _this2.applyButton = true;
+                _this3.setApplyEnabled = function () {
+                    _this3.applyButton = true;
                 };
-                _this2.setApplyDisabled = function () {
-                    _this2.applyButton = false;
+                _this3.setApplyDisabled = function () {
+                    _this3.applyButton = false;
                 };
-                _this2.isApplyEnabled = function () {
-                    return _this2.applyButton;
+                _this3.isApplyEnabled = function () {
+                    return _this3.applyButton;
                 };
-                _this2.add = function () {
+                _this3.add = function () {
                     // Prevent adding filter if no previous selected
-                    var lastFilter = _this2.last();
+                    var lastFilter = _this3.last();
                     if (lastFilter && !lastFilter.option) return;
-                    _this2.setApplyDisabled();
-                    _this2.push(new Filter_1.default(_this2));
+                    _this3.setApplyDisabled();
+                    _this3.push(new Filter_1.default(_this3));
                 };
-                _this2.getOptionByField = function (options, field) {
+                _this3.getOptionByField = function (options, field) {
                     var result = options.filter(function (o) {
                         return o.field == field;
                     });
                     if (result.length == 0) throw "Cached option field value " + field + " not found in options array!";
                     return result[0];
                 };
-                _this2.loadState = function () {
-                    var state = JSON.parse(localStorage.getItem(_this2.getID()));
+                _this3.loadState = function () {
+                    var state = JSON.parse(localStorage.getItem(_this3.getID()));
                     if (!state) return;
-                    var self = _this2;
+                    var self = _this3;
                     state.forEach(function (s) {
                         if (!s.values) return;
                         self.add();
                         var lastAddedFilter = self.last();
-                        var option = self.getOptionByField(self.options, s.option.field);
+                        var option = self.getOptionByField(self.options, s.field);
                         lastAddedFilter.onSelect(option);
                         // add values
                         s.values.forEach(function (v) {
@@ -189,46 +173,44 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
                         });
                     });
                 };
-                _this2.removeLast = function () {
-                    _this2.removeLastItem();
-                    _this2.callback();
-                    if (_this2.length == 0) _this2.applyButton = false;
+                _this3.removeLast = function () {
+                    _this3.removeLastItem();
+                    _this3.callback();
+                    if (_this3.length == 0) _this3.applyButton = false;
                 };
-                _this2.isFilterSelected = function (option) {
-                    return _this2.some(function (f) {
+                _this3.isFilterSelected = function (option) {
+                    return _this3.some(function (f) {
                         return f.option && f.option.field == option.field;
                     });
                 };
-                _this2.isValueSelected = function (value) {
-                    return _this2.some(function (f) {
-                        return f.values && f.values.some && f.values.some(function (v) {
-                            return v == value;
-                        });
-                    });
-                };
-                _this2.getResult = function () {
-                    var self = _this2;
-                    return _this2.map(function (m) {
+                _this3.getResult = function () {
+                    var self = _this3;
+                    var result = _this3.map(function (m) {
                         var o = {};
                         if (!m.option) {
-                            if (self.config.errorCallback) self.config.errorCallback("Select option before getting result");
-                            throw "Select option before getting result";
+                            if (self.config.errorCallback) self.config.errorCallback({ code: 2, message: "Select option before getting result" });
+                            return;
                         }
-                        o[m.option.field] = m.values;
+                        // mapping to loose all functions and other unnesesasrry properties
+                        o[m.option.field] = m.values.map(function (m) {
+                            return m;
+                        });
                         return o;
                     });
+                    // with map there will always at least one result
+                    return result[0];
                 };
                 if (!options) throw "Options not passed to DynamicFilter constructor!";
                 if (!config) throw "Callback not passed to DynamicFilter constructor!";
                 // TODO: should be handled properly; constructor has been called when this.splice is executed?
                 //if (!config || !options) return;
                 if (config.autoApply == null) config.autoApply = true;
-                _this2.config = config;
-                if (_this2.config.saveState) {
-                    _this2.loadState();
-                    _this2.config.callback(_this2.getResult());
+                _this3.config = config;
+                if (_this3.config.saveState) {
+                    _this3.loadState();
+                    _this3.config.callback(_this3.getResult());
                 }
-                return _this2;
+                return _this3;
             }
 
             return Filters;

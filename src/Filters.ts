@@ -118,7 +118,7 @@ export class Filters extends ExtendedArray {
 
     public getResult = (): any => {
         let self = this;
-        return this.map(function(m) {
+        let result = this.map(function(m) {
             var o: any = {};
             if (!m.option) {
                 if (self.config.errorCallback) self.config.errorCallback({ code: 2, message: "Select option before getting result" });
@@ -127,7 +127,9 @@ export class Filters extends ExtendedArray {
             // mapping to loose all functions and other unnesesasrry properties
             o[m.option.field] = m.values.map(function(m: string) { return m; });
             return o;
-        })[0];
+        });
+        // with map there will always at least one result
+        return result[0];
     }
 
 }
