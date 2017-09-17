@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/ivanblazevic/dynamic-filter.svg?branch=master)](https://travis-ci.org/ivanblazevic/dynamic-filter) [![Coverage Status](https://coveralls.io/repos/github/ivanblazevic/dynamic-filter/badge.svg?branch=master)](https://coveralls.io/github/ivanblazevic/dynamic-filter?branch=master) [![devDependencies Status](https://david-dm.org/ivanblazevic/dynamic-filter/dev-status.svg)](https://david-dm.org/ivanblazevic/dynamic-filter?type=dev)
+[![Build Status](https://travis-ci.org/ivanblazevic/dynamic-filter.svg?branch=master)](https://travis-ci.org/ivanblazevic/dynamic-filter) [![Coverage Status](https://coveralls.io/repos/github/ivanblazevic/dynamic-filter/badge.svg?branch=master)](https://coveralls.io/github/ivanblazevic/dynamic-filter?branch=master) [![devDependencies Status](https://david-dm.org/ivanblazevic/dynamic-filter/dev-status.svg)](https://david-dm.org/ivanblazevic/dynamic-filter?type=dev) [![Bower version](https://badge.fury.io/bo/dynamic-filter.svg)](https://badge.fury.io/bo/dynamic-filter) [![npm version](https://badge.fury.io/js/dynamic-filter.svg)](https://badge.fury.io/js/dynamic-filter)
 
 # Dynamic Filter
 
