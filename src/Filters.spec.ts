@@ -38,7 +38,7 @@ describe("Filters", () => {
 
     it("should init dynamic filter'", () => {
         localStorage.setItem("dynamicFilter", null);
-        expect(dynamicFilter.getResult()).toEqual(undefined);
+        expect(dynamicFilter.getResult()).toEqual({});
     });
 
     it("should call error callback if apply button is pressed and option is not selected yet'", () => {

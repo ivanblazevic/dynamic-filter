@@ -129,6 +129,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
                  * @force - boolean: used to override config.autoApply
                  */
                 _this3.callback = function (force) {
+                    console.log(_this3);
+                    console.log(force || _this3.config.autoApply);
                     if (!_this3.config) return;
                     if (_this3.config.saveState) _this3.save();
                     if (force || _this3.config.autoApply) _this3.config.callback(_this3.getResult());
@@ -185,8 +187,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
                 };
                 _this3.getResult = function () {
                     var self = _this3;
-                    var result = _this3.map(function (m) {
-                        var o = {};
+                    var o = {};
+                    var result = _this3.forEach(function (m) {
                         if (!m.option) {
                             if (self.config.errorCallback) self.config.errorCallback({ code: 2, message: "Select option before getting result" });
                             return;
@@ -197,8 +199,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
                         });
                         return o;
                     });
-                    // with map there will always at least one result
-                    return result[0];
+                    return o;
                 };
                 if (!options) throw "Options not passed to DynamicFilter constructor!";
                 if (!config) throw "Callback not passed to DynamicFilter constructor!";
