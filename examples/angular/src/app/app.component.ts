@@ -38,13 +38,13 @@ export class AppComponent {
 
   }
 
-  onCallback(result) {
-    // this.ngZone.run(() => { this.result = result; });
-    console.log(result);
+  // NOTE: it is importat to use es6-arrow-function to gain access to 'this'
+  onCallback = (result) => {
+    this.result = result;
   }
 
-  onErrorCallback(error) {
-    console.log(error);
+  onErrorCallback = (error) => {
+    alert(error);
   }
 
 }
