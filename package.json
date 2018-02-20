@@ -2,7 +2,6 @@
   "name": "dynamic-filter",
   "version": "1.1.0",
   "description": "Dynamic filter generates JSON key-array object as a result of user selection. This is generic library which can be implemented in any JS framework.",
-
   "scripts": {
     "test": "grunt test --travis=true"
   },

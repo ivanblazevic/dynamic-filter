@@ -23,7 +23,7 @@ export class AppComponent {
     const option1: Option = {
       label: 'Option 1',
       field: 'Option 1',
-      type: OptionType.AUTOCOMPLETE,
+      type: OptionType.OPTIONS,
       options: ['Test 1']
     };
 
@@ -31,12 +31,12 @@ export class AppComponent {
 
   }
 
-  onCallback() {
-    console.log('test');
+  onCallback(result) {
+    console.log(result);
   }
 
-  onErrorCallback() {
-    console.log('error');
+  onErrorCallback(error) {
+    console.log(error);
   }
 
 }

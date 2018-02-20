@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+// import { Filters, Option, Config } from 'dynamic-filter';
 import { Filters, Option, Config } from '../../../../..';
 import { OptionType } from '../../../../../src/OptionType';
 
