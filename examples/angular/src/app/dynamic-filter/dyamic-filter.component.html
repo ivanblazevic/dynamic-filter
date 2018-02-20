@@ -1,74 +1,58 @@
 <div *ngFor="let filter of filters">
-<!--
-<md-input-container style="width: 18%;">
-  <md-select ng-model="filter.option" placeholder="Select option" ng-change="filter.onSelect(filter.option)" flex="auto">
-    <md-option ng-hide="filters.isFilterSelected(o)" ng-value="o" ng-repeat="o in options">{{ o.label }}</md-option>
-  </md-select>
-</md-input-container>
--->
-<mat-form-field>
-  <mat-select [(value)]="selected" placeholder="Select option" (change)="filter.onSelect(selected)">
-    <mat-option *ngFor="let option of options" [value]="option">
-      {{ option.label }}
-    </mat-option>
-  </mat-select>
-</mat-form-field>
 
-<span *ngFor="let value of filter.values;index as i" style="margin-left: 10px;width:18%">
-
-  <div style="width: 100%;" *ngIf="!filter.isAutocomplete()">
-
-    <mat-select [(value)]="filter.values[i]" placeholder="Select option" (change)="filter.callback()" placeholder="Select value" *ngIf="filter.isOptions()">
-      <mat-option *ngFor="let option of filter.option.options" [value]="option">
-        {{ option }}
-      </mat-option>
+  <mat-form-field>
+    <mat-select [(value)]="filter.option" placeholder="Select option" (change)="filter.onSelect(filter.option)">
+        <!-- *ngIf="!filters.isFilterSelected(option)"
+        <ng-template ngFor let-option [ngForOf]="options">
+         -->
+        <mat-option *ngFor="let option of options" [value]="option">
+          {{ option.label }}
+        </mat-option>
     </mat-select>
+  </mat-form-field>
 
-    <!--  track by $index
-    <md-select ng-model="filter.values[$index]" ng-change="filter.callback()" placeholder="Select value" ng-if="filter.isOptions()">
-      <md-option ng-hide="filter.isValueSelected(o)" ng-value="o" ng-repeat="o in filter.option.options">{{ o }}</md-option>
-    </md-select>
+  <span *ngFor="let value of filter.values;index as i" style="margin-left: 22px;width:18%">
 
-    <input type="text" ng-model="filter.values[$index]" ng-if="filter.isText()" ng-model-onblur ng-change="filter.callback()">
+    <div style="width: 100%;display: inherit;" *ngIf="!filter.isAutocomplete()">
+
+      <mat-form-field *ngIf="filter.isOptions()">
+        <mat-select style="width:200px" [(value)]="filter.values[i]" placeholder="Select option" (change)="filter.callback()" placeholder="Select value">
+          <mat-option [value]="option" *ngFor="let option of filter.option.options">
+            {{ option }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field *ngIf="filter.isText()">
+        <input matInput placeholder="" [(ngModel)]="model" (blur)="filter.values[i]=model;filter.callback()"/>
+      </mat-form-field>  
+
+    </div>
+
+    <!--
+    <md-autocomplete placeholder="Search..." style="display: inline-block;margin-top: 8px;width: 100%;" ng-if="filter.isAutocomplete()"
+      md-search-text="searchText" md-selected-item="filter.values[$index]" md-selected-item-change="filter.callback()" md-items="item in filter.option.querySearch(searchText)"
+      md-item-text="item" md-min-length="0">
+      <md-item-template>
+        <span md-highlight-text="ctrl.searchText" md-highlight-flags="^i">{{item}}</span>
+      </md-item-template>
+    </md-autocomplete>
     -->
 
-  </div>
+  </span>
 
   <!--
-  <md-autocomplete placeholder="Search..." style="display: inline-block;margin-top: 8px;width: 100%;" ng-if="filter.isAutocomplete()"
-    md-search-text="searchText" md-selected-item="filter.values[$index]" md-selected-item-change="filter.callback()" md-items="item in filter.option.querySearch(searchText)"
-    md-item-text="item" md-min-length="0">
-    <md-item-template>
-      <span md-highlight-text="ctrl.searchText" md-highlight-flags="^i">{{item}}</span>
-    </md-item-template>
-  </md-autocomplete>
--->
+  <md-input-container style="margin-top: 2px;">
+    <md-button ng-show="filter.canAddValue()" ng-click="filter.addValue()" class="md-fab md-primary" style="height: 20px;width: 37px;">
+      <md-icon class="fa fa-plus" style="vertical-align: bottom;line-height: 25px;"></md-icon>
+    </md-button>
+  </md-input-container>
+  -->
 
-</span>
-
-<!--
-<md-input-container style="margin-top: 2px;">
-  <md-button ng-show="filter.canAddValue()" ng-click="filter.addValue()" class="md-fab md-primary" style="height: 20px;width: 37px;">
-    <md-icon class="fa fa-plus" style="vertical-align: bottom;line-height: 25px;"></md-icon>
-  </md-button>
-</md-input-container>
--->
-
-  <button (click)="filter.addValue()">add</button>
+    <button *ngIf="filter.canAddValue()"  mat-button mat-raised-button (click)="filter.addValue()">Add Value</button>
 
 </div>
 
-
-<br>
-<br>
-<br>
-
-<button (click)="filters.add()">add</button>
-
-<!--
-    <md-input-container style="margin: 0 0 20px 0;">
-      <md-button ng-click="filters.add()" class="md-raised md-primary">Add Filter</md-button>
-      <md-button ng-click="filters.removeLast()" class="md-raised">Remove Filter</md-button>
-      <md-button ng-show="!config.autoApply && filters.isApplyEnabled()" ng-click="filters.callback(true)" class="md-raised">Apply</md-button>
-    </md-input-container>
-  -->
+<button mat-button mat-raised-button (click)="filters.add()">Add Filter</button>
+<button mat-button warn mat-raised-button (click)="filters.removeLast()">Remove Filter</button>
+<button mat-button mat-raised-button (click)="filters.callback(true)" *ngIf="!config.autoApply && filters.isApplyEnabled()">Apply</button>

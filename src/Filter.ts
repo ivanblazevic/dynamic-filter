@@ -35,7 +35,7 @@ export default class Filter {
     }
 
     public isValueSelected = (value: string): boolean => {
-        return this.values.some(function(v: string) {
+        return this.values && this.values.some(function(v: string) {
             return v == value;
         })
     }
