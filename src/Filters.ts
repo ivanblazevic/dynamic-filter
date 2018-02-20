@@ -1,5 +1,7 @@
 import ExtendedArray from "./ExtendedArray";
 import Filter from "./Filter";
+import { Option } from "./Option";
+import { Config } from "./Config";
 
 export interface FilterState {
     field: string,

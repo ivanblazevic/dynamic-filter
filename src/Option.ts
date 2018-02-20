@@ -1,10 +1,6 @@
-declare const enum OptionType {
-    TEXT = 'TEXT',
-    AUTOCOMPLETE = 'AUTOCOMPLETE',
-    OPTIONS = 'OPTIONS'
-}
+import { OptionType } from './OptionType';
 
- interface Option {
+export interface Option {
     label: string;
     field: string;
     type: OptionType;

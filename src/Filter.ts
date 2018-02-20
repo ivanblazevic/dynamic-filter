@@ -1,4 +1,6 @@
 import ExtendedArray from "./ExtendedArray";
+import { Option } from './Option';
+import { OptionType } from './OptionType';
 
 export default class Filter {
 

@@ -1,16 +1,30 @@
 {
-    "compileOnSave": false,
     "compilerOptions": {
+        "lib": [
+            "es6",
+            "dom"
+        ],
         "module": "commonjs",
-        "noImplicitAny": true,
-        "outDir": "tmp",
-        "target": "ES6",
+        "target": "es5",
+        "noImplicitAny": false,
+        "moduleResolution": "node",
+        "emitDecoratorMetadata": true,
+        "noUnusedLocals": false,
         "sourceMap": true,
-        "types" : [
+        "declaration": true,
+        "rootDir": ".",
+        "outDir": "dist",
+        "allowSyntheticDefaultImports": true,
+        "removeComments": true,
+        "experimentalDecorators": true,
+        "types": [
+            "node",
             "jasmine"
         ]
     },
-    "exclude": [
-        "node_modules"
+    "include": [
+        "index.ts",
+        "lib/**/*",
+        "spec/**/*"
     ]
 }
