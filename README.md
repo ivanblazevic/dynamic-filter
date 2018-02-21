@@ -7,7 +7,6 @@ Checkout examples for major JS frameworks bellow:
 
 ### AngularJS EXAMPLE: [Dynamic Filter with AngularJS](https://ivanblazevic.github.io/angular-dynamic-filter/)
 ### Angular4 EXAMPLE: [Dynamic Filter with Angular4](https://ivanblazevic.github.io/angular-dynamic-filter/)
-### ReactJS EXAMPLE: [Dynamic Filter with ReactJS](https://ivanblazevic.github.io/angular-dynamic-filter/)
 
 # Features!
 
