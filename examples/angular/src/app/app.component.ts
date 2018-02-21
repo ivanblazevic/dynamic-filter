@@ -1,6 +1,5 @@
 import { Component, OnInit, NgZone } from '@angular/core';
-import { Filters, Option, Config } from '../../../..';
-import { OptionType } from '../../../../src/OptionType';
+import { Filters, Option, Config, OptionType } from 'dynamic-filter';
 
 @Component({
   selector: 'app-root',
